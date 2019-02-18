@@ -34,8 +34,10 @@ public class Specular extends Material {
 
     @Override
     public Color render(Intersection intersection, Render render, Sample sample) {
-        Ray reflectedRay = new Ray(intersection.getHitPos().add(intersection.getNormal()), reflect(intersection));
+        Ray reflectedRay = new Ray(intersection.getHitPos(), reflect(intersection));
+
         Sample reflectionSample = new Sample(reflectedRay, sample, this.kr);
+
         render.addSample(reflectionSample);
 
         return baseMaterial.render(intersection, render, sample).multiply(this.kd);

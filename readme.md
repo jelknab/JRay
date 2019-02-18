@@ -13,12 +13,14 @@ on that in a later stadium-.
 I've decided to host it on Github for my portfolio.
 </p>
 
+![render of latest version](https://i.imgur.com/SdUB1Ro.jpg)
+
 <h2>To-do list</h2>
 <ol>
     <li>Add model loading (.obj)</li>
     <li>Add more materials and textures</li>
     <li>Add support for sequence rendering</li>
-    <li>Add more lights</li>
+    <li>Add more light types</li>
     <li>Add global illumination</li>
     <li>optimisation tactics</li>
 </ol>
@@ -26,6 +28,6 @@ I've decided to host it on Github for my portfolio.
 <h2>Trying it yourself</h2>
 <p>
 Right now it's simple. Simply clone the project, edit the scene and settings in scenes/testSettings.xml if you like.<br><br>
-Run with args:<br>
+Build with maven; Run with args:<br>
 <code>-h -s scenes/testSettings.xml -p 9090 -a localhost:9090</code>
 </p>

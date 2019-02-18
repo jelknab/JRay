@@ -1,8 +1,9 @@
 <settings>
 	<rendersettings>
 		<resolution>
-			<width>2048</width>
-			<height>2048</height>
+			<width>3840</width>
+			<height>2160</height>
+			<subSamples>9</subSamples>
 		</resolution>
 		<blockSize>256</blockSize>
 		<sequence>
@@ -12,6 +13,22 @@
 	</rendersettings>
 	
 	<scene>
+		<!-- ########CAMERA######## -->
+		<camera>
+			<position>
+				<x>0</x>
+				<y>7.5</y>
+				<z>10</z>
+			</position>
+			<angle>
+				<pitch>-20</pitch>
+				<yaw>0</yaw>
+				<roll>0</roll>
+			</angle>
+
+			<fov>75</fov>
+		</camera>
+
 		<!-- ########MATERIALS######## -->
 		<materials>
 			<material class="lambert" name="red">
@@ -142,21 +159,5 @@
             </light>
 
         </lights>
-		
-		<!-- ########CAMERA######## -->
-		<camera>
-			<position>
-				<x>0</x>
-				<y>7.5</y>
-				<z>10</z>
-			</position>
-			<angle>
-				<pitch>-20</pitch>
-				<yaw>0</yaw>
-				<roll>0</roll>
-			</angle>
-			
-			<fov>120</fov>
-		</camera>
 	</scene>
 </settings>

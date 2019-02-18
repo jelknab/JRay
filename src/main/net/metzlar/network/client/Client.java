@@ -49,7 +49,7 @@ public class Client {
     }
 
     private void render() {
-        RenderThread[] renderThreads = new RenderThread[Math.max(Runtime.getRuntime().availableProcessors()-5, 1)];
+        RenderThread[] renderThreads = new RenderThread[Math.max(Runtime.getRuntime().availableProcessors()-1, 1)];
 
         for (int thread = 0; thread < renderThreads.length; thread++) {
             RenderClient renderClient = new RenderClient(this);

@@ -16,6 +16,7 @@ public class Settings implements Serializable {
     private int imageHeight;
     private double aspectRatio;
     private int tileSize;
+    private int subSamples;
 
     private Scene scene;
 
@@ -30,10 +31,13 @@ public class Settings implements Serializable {
     private Settings(Document settingsDocument) {
         this.imageWidth = Integer.parseInt(settingsDocument.select("settings > rendersettings > resolution > width").html());
         this.imageHeight = Integer.parseInt(settingsDocument.select("settings > rendersettings > resolution > height").html());
+        this.subSamples = Integer.parseInt(settingsDocument.select("settings > rendersettings > resolution > subSamples").html());
+
         this.aspectRatio = (double) this.imageWidth / this.imageHeight;
         this.tileSize = Integer.parseInt(settingsDocument.select("rendersettings blockSize").html());
 
         this.scene = new SceneParser().parse(settingsDocument.select("settings > scene").first());
+
     }
 
     public int getImageWidth() {
@@ -54,5 +58,9 @@ public class Settings implements Serializable {
 
     public Scene getScene() {
         return scene;
+    }
+
+    public int getSubSamples() {
+        return subSamples;
     }
 }
