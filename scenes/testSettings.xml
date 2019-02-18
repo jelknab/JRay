@@ -1,0 +1,162 @@
+<settings>
+	<rendersettings>
+		<resolution>
+			<width>2048</width>
+			<height>2048</height>
+		</resolution>
+		<blockSize>256</blockSize>
+		<sequence>
+			<start>0</start>
+			<end>240</end>
+		</sequence>
+	</rendersettings>
+	
+	<scene>
+		<!-- ########MATERIALS######## -->
+		<materials>
+			<material class="lambert" name="red">
+                <kd>1</kd>
+                <ks>.3</ks>
+                <n>50</n>
+				<texture class="checker" color="#ff7171" u="10" v="10" />
+			</material>
+			
+			<material class="lambert" name="green">
+                <kd>1</kd>
+                <ks>.3</ks>
+                <n>50</n>
+				<texture class="checker" color="#78ff71" u="20" v="20" />
+			</material>
+			
+			<material class="lambert" name="blue">
+                <kd>1</kd>
+                <ks>.3</ks>
+                <n>50</n>
+				<texture class="checker" color="#72f7ff" u="30" v="30" />
+			</material>
+
+			<material class="specular" name="shiny red">
+				<kd>0.5</kd>
+				<kr>0.5</kr>
+				<base_material></base_material>
+				<texture class="checker" color="#FFFFFF" u="30" v="30" />
+			</material>
+
+			<material class="specular" name="mirror">
+				<kd>0</kd>
+				<kr>1</kr>
+				<base_material></base_material>
+			</material>
+
+            <material class="lambert" name="lambert grey">
+                <texture class="solid color" color="#cccccc"/>
+            </material>
+		</materials>
+	
+		<!-- ########OBJECTS######## -->
+		<objects>
+			<renderable class="sphere" name="sphere 01" material="green">
+				<position>
+					<x>0</x>
+					<y>0</y>
+					<z>3</z>
+				</position>
+			
+				<radius>2</radius>
+			</renderable>
+			<renderable class="sphere" name="sphere 02" material="shiny red">
+				<position>
+					<x>2.59</x>
+					<y>0</y>
+					<z>-1.5</z>
+				</position>
+
+				<radius>2</radius>
+			</renderable>
+			<renderable class="sphere" name="sphere 03" material="mirror">
+				<position>
+					<x>-2.59</x>
+					<y>0</y>
+					<z>-1.5</z>
+				</position>
+
+				<radius>2</radius>
+			</renderable>
+			
+			<renderable class="plane" material="lambert grey">
+				<position> <x>0</x>  <y>-4</y> <z>0</z> </position>
+				<angle> <pitch>0</pitch> <yaw>0</yaw> <roll>0</roll> </angle>
+				<texture_size>0.3</texture_size>
+			</renderable>
+			
+			<renderable class="plane" material="mirror">
+				<position> <x>0</x>  <y>-4</y> <z>-10</z> </position>
+				<angle> <pitch>-90</pitch> <yaw>0</yaw> <roll>0</roll> </angle>
+				<texture_size>0.1</texture_size>
+			</renderable>
+			
+			<renderable class="plane" material="green">
+				<position> <x>-10</x>  <y>-4</y> <z>0</z> </position>
+				<angle> <pitch>0</pitch> <yaw>0</yaw> <roll>90</roll> </angle>
+				<texture_size>0.1</texture_size>
+			</renderable>
+			
+			<renderable class="plane" material="red">
+				<position> <x>10</x>  <y>-4</y> <z>0</z> </position>
+				<angle> <pitch>0</pitch> <yaw>0</yaw> <roll>-90</roll> </angle>
+				<texture_size>0.1</texture_size>
+			</renderable>
+		</objects>
+		
+		<!-- ########LIGHTS######## -->
+		<lights>
+			<light class="point light">
+				<position>
+					<x>$sin(0 * pi/180) * 5</x>
+					<y>5</y>
+					<z>$cos(0 * pi/180) * 5</z>
+				</position>
+
+                <color>#ccccff</color>
+				<intensity>20</intensity>
+			</light>
+            <light class="point light">
+                <position>
+					<x>$sin(120 * pi/180) * 5</x>
+					<y>5</y>
+					<z>$cos(120 * pi/180) * 5</z>
+                </position>
+
+                <color>#ccffcc</color>
+                <intensity>20</intensity>
+            </light>
+            <light class="point light">
+                <position>
+					<x>$sin(240 * pi/180) * 5</x>
+					<y>5</y>
+					<z>$cos(240 * pi/180) * 5</z>
+                </position>
+
+                <color>#ffcccc</color>
+                <intensity>20</intensity>
+            </light>
+
+        </lights>
+		
+		<!-- ########CAMERA######## -->
+		<camera>
+			<position>
+				<x>0</x>
+				<y>7.5</y>
+				<z>10</z>
+			</position>
+			<angle>
+				<pitch>-20</pitch>
+				<yaw>0</yaw>
+				<roll>0</roll>
+			</angle>
+			
+			<fov>120</fov>
+		</camera>
+	</scene>
+</settings>
