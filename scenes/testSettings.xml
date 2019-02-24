@@ -1,11 +1,11 @@
 <settings>
 	<rendersettings>
 		<resolution>
-			<width>3840</width>
-			<height>2160</height>
+			<width>512</width>
+			<height>512</height>
 			<subSamples>9</subSamples>
 		</resolution>
-		<blockSize>256</blockSize>
+		<blockSize>64</blockSize>
 		<sequence>
 			<start>0</start>
 			<end>240</end>
@@ -72,16 +72,7 @@
 	
 		<!-- ########OBJECTS######## -->
 		<objects>
-			<renderable class="sphere" name="sphere 01" material="green">
-				<position>
-					<x>0</x>
-					<y>0</y>
-					<z>3</z>
-				</position>
-			
-				<radius>2</radius>
-			</renderable>
-			<renderable class="sphere" name="sphere 02" material="shiny red">
+			<renderable class="sphere" name="sphere 02" material="mirror">
 				<position>
 					<x>2.59</x>
 					<y>0</y>
@@ -106,7 +97,7 @@
 				<texture_size>0.3</texture_size>
 			</renderable>
 			
-			<renderable class="plane" material="mirror">
+			<renderable class="plane" material="lambert grey">
 				<position> <x>0</x>  <y>-4</y> <z>-10</z> </position>
 				<angle> <pitch>-90</pitch> <yaw>0</yaw> <roll>0</roll> </angle>
 				<texture_size>0.1</texture_size>
@@ -134,8 +125,8 @@
 					<z>$cos(0 * pi/180) * 5</z>
 				</position>
 
-                <color>#ccccff</color>
-				<intensity>20</intensity>
+                <color>#5555ff</color>
+				<intensity>500</intensity>
 			</light>
             <light class="point light">
                 <position>
@@ -144,8 +135,8 @@
 					<z>$cos(120 * pi/180) * 5</z>
                 </position>
 
-                <color>#ccffcc</color>
-                <intensity>20</intensity>
+                <color>#55ff55</color>
+                <intensity>500</intensity>
             </light>
             <light class="point light">
                 <position>
@@ -154,8 +145,8 @@
 					<z>$cos(240 * pi/180) * 5</z>
                 </position>
 
-                <color>#ffcccc</color>
-                <intensity>20</intensity>
+                <color>#ff5555</color>
+                <intensity>500</intensity>
             </light>
 
         </lights>

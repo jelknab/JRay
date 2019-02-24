@@ -14,7 +14,10 @@ import java.io.Serializable;
 public abstract class Renderable extends Object3D implements Serializable {
     Vec3 orientation;
     Material material;
-    Mat4 transformationMatrix = new Mat4();
+
+    Renderable() {
+        this(new Vec3());
+    }
 
     Renderable(Vec3 position) {
         this(position, new Angle(), new Lambert(new CheckerBoard(Color.RED, 20, 20)));

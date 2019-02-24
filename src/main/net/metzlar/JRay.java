@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
 public class JRay {
+    public static final File HOME_DIRECTORY = new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath(), "/JRay");
+    public static File MODEL_DIRECTORY = new File(HOME_DIRECTORY, "models");
 
     /**
      * @param args client:
@@ -85,15 +87,13 @@ public class JRay {
     }
 
     private static boolean createDirectories() {
-        File home = new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath(), "/JRay");
-        if (!home.exists() && !home.mkdir()) {
-            System.err.printf("Failed to create home directory at: %s\n", home.getAbsolutePath());
+        if (!HOME_DIRECTORY.exists() && !HOME_DIRECTORY.mkdir()) {
+            System.err.printf("Failed to create home directory at: %s\n", HOME_DIRECTORY.getAbsolutePath());
             return false;
         }
 
-        File models = new File(home, "models");
-        if (!models.exists() && !models.mkdir()) {
-            System.err.printf("Failed to create models directory at: %s\n", models.getAbsolutePath());
+        if (!MODEL_DIRECTORY.exists() && !MODEL_DIRECTORY.mkdir()) {
+            System.err.printf("Failed to create models directory at: %s\n", MODEL_DIRECTORY.getAbsolutePath());
             return false;
         }
 

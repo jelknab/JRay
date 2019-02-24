@@ -13,16 +13,14 @@ public class Render {
 
     private Scene scene;
     private Sample cameraSample;
-    private Stack<Sample> sampleStack;
-    private Stack<Sample> finishedSampleStack;
+    private Stack<Sample> sampleStack = new Stack<>();
+    private Stack<Sample> finishedSampleStack = new Stack<>();
     private Statistics statistics;
 
     public Render(Scene scene, Sample cameraSample) {
         this.scene = scene;
         this.cameraSample = cameraSample;
 
-        this.sampleStack = new Stack<>();
-        this.finishedSampleStack = new Stack<>();
         this.sampleStack.push(cameraSample);
 
         this.statistics = new Statistics();
@@ -49,8 +47,9 @@ public class Render {
 
         //statistics.addRunTime(System.currentTimeMillis() - startTimestamp);
 
-        //todo: keep a better list so sorting and reversing of samples is not needed.
-        finishedSampleStack.stream().sorted(Comparator.comparingInt(Sample::getDepth).reversed()).forEach(Sample::addColorToParent);
+        while (!finishedSampleStack.empty()) {
+            finishedSampleStack.pop().addColorToParent();
+        }
 
         return cameraSample.getColor();
     }

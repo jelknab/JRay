@@ -28,7 +28,7 @@ public class Lambert extends Material {
         Color surfaceColor = this.getTexture().getColorAtPosition(intersection.getTexturePos());
 
         for (Light light : render.getScene().getLights()) {
-            Color intensity = light.getIntensity(render, intersection);
+            Color intensity = light.getNormIntensity(render, intersection);
 
             if (intensity != Color.BLACK) {
                 Vec3 light2PointDir = light.getPosition().subtract(intersection.getHitPos()).getNormalized();

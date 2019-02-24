@@ -45,7 +45,7 @@ public class Scene implements Serializable {
             }
         }
 
-        render.getStatistics().addIntersections(this.renderables.size());
+        //render.getStatistics().addIntersections(this.renderables.size());
 
         return closest;
     }
