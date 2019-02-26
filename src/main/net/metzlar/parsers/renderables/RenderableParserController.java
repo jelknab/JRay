@@ -16,6 +16,7 @@ public class RenderableParserController extends ParseController<Renderable, Pars
 
         parsers.put("sphere", new ParserSphere());
         parsers.put("plane", new ParserPlane());
+        parsers.put("modelOBJ", new ParserOBJ());
     }
 
     @Override

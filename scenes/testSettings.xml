@@ -72,6 +72,20 @@
 	
 		<!-- ########OBJECTS######## -->
 		<objects>
+			<renderable class="modelOBJ" path="dragon.obj" material="green">
+				<position>
+					<x>0</x>
+					<y>0</y>
+					<z>0</z>
+				</position>
+
+				<orientation>
+					<p>0</p>
+					<y>0</y>
+					<r>0</r>
+				</orientation>
+			</renderable>
+
 			<renderable class="sphere" name="sphere 02" material="mirror">
 				<position>
 					<x>2.59</x>

@@ -10,7 +10,7 @@ import java.lang.management.ManagementFactory;
 
 public class JRay {
     public static final File HOME_DIRECTORY = new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath(), "/JRay");
-    public static File MODEL_DIRECTORY = new File(HOME_DIRECTORY, "models");
+    public static final File MODEL_DIRECTORY = new File(HOME_DIRECTORY, "models");
 
     /**
      * @param args client:
