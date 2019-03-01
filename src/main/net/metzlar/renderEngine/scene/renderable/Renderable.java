@@ -7,6 +7,7 @@ import net.metzlar.renderEngine.scene.texture.CheckerBoard;
 import net.metzlar.renderEngine.types.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Renderable is the class that all objects that can be intersected by rays should extend.
@@ -41,6 +42,28 @@ public abstract class Renderable extends Object3D implements Serializable {
      * @return null if ray does not hit, or intersection if it does.
      */
     public abstract Intersection intersectRay(Ray r);
+
+    public static Intersection closestIntersection(Ray r, List<Renderable> renderableList) {
+        Intersection closest = null;
+
+        // Loop over all the objects we could intersect with
+        for (Renderable renderable : renderableList) {
+            Intersection intersection = renderable.intersectRay(r);
+
+            // if we intersect
+            if (intersection != null) {
+
+                // Check if object is closer as current closest object and greater than epsilon (usually self intersection)
+                if ((closest == null || intersection.getDistance() < closest.getDistance()) && intersection.getDistance() > 1e-6) {
+                    closest = intersection;
+                }
+            }
+        }
+
+        //render.getStatistics().addIntersections(this.renderables.size());
+
+        return closest;
+    }
 
     public Vec3 getOrientation() {
         return orientation;

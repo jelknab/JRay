@@ -3,7 +3,7 @@
 		<resolution>
 			<width>512</width>
 			<height>512</height>
-			<subSamples>9</subSamples>
+			<subSamples>1</subSamples>
 		</resolution>
 		<blockSize>64</blockSize>
 		<sequence>
@@ -72,10 +72,10 @@
 	
 		<!-- ########OBJECTS######## -->
 		<objects>
-			<renderable class="modelOBJ" path="dragon.obj" material="green">
+			<renderable class="modelOBJ" path="bunny.obj" material="green">
 				<position>
 					<x>0</x>
-					<y>0</y>
+					<y>5</y>
 					<z>0</z>
 				</position>
 

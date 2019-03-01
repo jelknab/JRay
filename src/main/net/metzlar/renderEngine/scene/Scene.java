@@ -29,25 +29,7 @@ public class Scene implements Serializable {
      * @return null for no intersection or the closest intersected object.
      */
     public Intersection intersectScene(Ray ray, Render render) {
-        Intersection closest = null;
-
-        // Loop over all the objects we could intersect with
-        for (Renderable renderable : this.renderables) {
-            Intersection intersection = renderable.intersectRay(ray);
-
-            // if we intersect
-            if (intersection != null) {
-
-                // Check if object is closer as current closest object and greater than epsilon (usually self intersection)
-                if ((closest == null || intersection.getDistance() < closest.getDistance()) && intersection.getDistance() > 1e-6) {
-                    closest = intersection;
-                }
-            }
-        }
-
-        //render.getStatistics().addIntersections(this.renderables.size());
-
-        return closest;
+        return Renderable.closestIntersection(ray, this.renderables);
     }
 
     public void addRenderable(Renderable obj) {
