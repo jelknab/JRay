@@ -9,22 +9,29 @@ import net.metzlar.renderEngine.types.Angle;
 import net.metzlar.renderEngine.types.Vec2;
 import net.metzlar.renderEngine.types.Vec3;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParserOBJ implements Parser<Renderable> {
-    List<Vec3> allVertices = new ArrayList<>();
-    List<Vec2> allTextureCoordinates = new ArrayList<>();
-    List<Vec3> allVertexNormals = new ArrayList<>();
-    List<TempFace> tempFaces = new ArrayList<>();
+    private List<Vec3> allVertices = new ArrayList<>();
+    private List<Vec2> allTextureCoordinates = new ArrayList<>();
+    private List<Vec3> allVertexNormals = new ArrayList<>();
+    private List<TempFace> tempFaces = new ArrayList<>();
+
+    private double scale = 1;
 
     @Override
     public Renderable parse(Element docElement) {
         Model model = null;
 
         String path = docElement.attr("path");
+
+        Elements scaleElements = docElement.select("scale");
+        if (!scaleElements.isEmpty())
+            this.scale = Double.parseDouble(scaleElements.html());
 
         File objectFile = new File(JRay.MODEL_DIRECTORY, path);
         File materialFile = new File(JRay.MODEL_DIRECTORY, path.replace(".obj", ".mtl"));
@@ -34,6 +41,9 @@ public class ParserOBJ implements Parser<Renderable> {
 
             String line;
             while ((line = reader.readLine()) != null) {
+                line = line.replaceAll("\\s+"," ");
+
+                if (line.isEmpty()) continue;
                 if (line.charAt(0) == '#') continue;
 
                 String[] split = line.split(" ");
@@ -88,7 +98,7 @@ public class ParserOBJ implements Parser<Renderable> {
                 Float.parseFloat(strings[1]),
                 Float.parseFloat(strings[2]),
                 Float.parseFloat(strings[3])
-        ).multiply(20);
+        ).multiply(scale);
     }
 
     private Vec2 parseTextureCoordinate(String[] strings) {

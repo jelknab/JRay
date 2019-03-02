@@ -1,11 +1,11 @@
 <settings>
 	<rendersettings>
 		<resolution>
-			<width>512</width>
-			<height>512</height>
-			<subSamples>1</subSamples>
+			<width>3840</width>
+			<height>2160</height>
+			<subSamples>3</subSamples>
 		</resolution>
-		<blockSize>64</blockSize>
+		<blockSize>128</blockSize>
 		<sequence>
 			<start>0</start>
 			<end>240</end>
@@ -21,12 +21,12 @@
 				<z>10</z>
 			</position>
 			<angle>
-				<pitch>-20</pitch>
+				<pitch>-25</pitch>
 				<yaw>0</yaw>
 				<roll>0</roll>
 			</angle>
 
-			<fov>75</fov>
+			<fov>40</fov>
 		</camera>
 
 		<!-- ########MATERIALS######## -->
@@ -84,13 +84,15 @@
 					<y>0</y>
 					<r>0</r>
 				</orientation>
+
+				<scale>20</scale>
 			</renderable>
 
 			<renderable class="sphere" name="sphere 02" material="mirror">
 				<position>
 					<x>2.59</x>
 					<y>0</y>
-					<z>-1.5</z>
+					<z>-5</z>
 				</position>
 
 				<radius>2</radius>
@@ -99,7 +101,7 @@
 				<position>
 					<x>-2.59</x>
 					<y>0</y>
-					<z>-1.5</z>
+					<z>-5</z>
 				</position>
 
 				<radius>2</radius>
@@ -111,7 +113,7 @@
 				<texture_size>0.3</texture_size>
 			</renderable>
 			
-			<renderable class="plane" material="lambert grey">
+			<renderable class="plane" material="mirror">
 				<position> <x>0</x>  <y>-4</y> <z>-10</z> </position>
 				<angle> <pitch>-90</pitch> <yaw>0</yaw> <roll>0</roll> </angle>
 				<texture_size>0.1</texture_size>

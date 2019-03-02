@@ -1,6 +1,8 @@
 package net.metzlar.renderEngine.types;
 
-public class Vec2 {
+import java.io.Serializable;
+
+public class Vec2 implements Serializable {
     private final double x, y;
 
     public Vec2() {
@@ -18,5 +20,13 @@ public class Vec2 {
 
     public double getY() {
         return y;
+    }
+
+    public Vec2 multiply(double b) {
+        return new Vec2(this.x*b, this.y*b);
+    }
+
+    public Vec2 add(Vec2 b) {
+        return new Vec2(this.x + b.x, this.y + b.y);
     }
 }
