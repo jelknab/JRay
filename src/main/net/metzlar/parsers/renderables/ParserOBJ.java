@@ -85,7 +85,7 @@ public class ParserOBJ implements Parser<Renderable> {
                 model.addFaces(tempFace.triangulate());
             }
 
-
+            model.makeTree();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,11 +1,11 @@
 <settings>
 	<rendersettings>
 		<resolution>
-			<width>3840</width>
-			<height>2160</height>
-			<subSamples>3</subSamples>
+			<width>512</width>
+			<height>512</height>
+			<subSamples>1</subSamples>
 		</resolution>
-		<blockSize>128</blockSize>
+		<blockSize>64</blockSize>
 		<sequence>
 			<start>0</start>
 			<end>240</end>
@@ -72,7 +72,7 @@
 	
 		<!-- ########OBJECTS######## -->
 		<objects>
-			<renderable class="modelOBJ" path="bunny.obj" material="green">
+			<renderable class="modelOBJ" path="dragon.obj" material="green">
 				<position>
 					<x>0</x>
 					<y>5</y>
@@ -85,7 +85,7 @@
 					<r>0</r>
 				</orientation>
 
-				<scale>20</scale>
+				<scale>0.5</scale>
 			</renderable>
 
 			<renderable class="sphere" name="sphere 02" material="mirror">

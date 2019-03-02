@@ -43,7 +43,7 @@ public abstract class Renderable extends Object3D implements Serializable {
      */
     public abstract Intersection intersectRay(Ray r);
 
-    public static Intersection closestIntersection(Ray r, List<Renderable> renderableList) {
+    public static Intersection closestIntersection(Ray r, List<? extends Renderable> renderableList) {
         Intersection closest = null;
 
         // Loop over all the objects we could intersect with

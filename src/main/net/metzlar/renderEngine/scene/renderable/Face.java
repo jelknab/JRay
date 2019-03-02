@@ -8,8 +8,6 @@ import java.util.Arrays;
 
 public class Face extends Renderable {
     private Vec3[] v;
-    private Vec2[] uv;
-    private Vec3[] vn;
 
     private NormalTactic normalTactic;
     private TextureTactic textureTactic;
@@ -24,19 +22,15 @@ public class Face extends Renderable {
 
     public Face(Vec3[] v, Vec2[] uv, Vec3[] vn) {
         this.v = v;
-        this.uv = uv;
-        this.vn = vn;
         this.material = Material.DEFAULT;
 
         if (vn == null || Arrays.asList(vn).contains(null)) {
-            this.vn = null;
             this.normalTactic = new StaticNormal((v[1].subtract(v[0])).cross(v[2].subtract(v[0])).getNormalized());
         } else {
             this.normalTactic = new SmoothNormal(vn);
         }
 
         if (uv == null || Arrays.asList(uv).contains(null)) {
-            this.uv = null;
             this.textureTactic = new DefaultUV();
         } else {
             this.textureTactic = new ModelUV(uv);
@@ -77,6 +71,10 @@ public class Face extends Renderable {
                 this,
                 dist
         );
+    }
+
+    public Vec3[] getVertices() {
+        return v;
     }
 
     private interface NormalTactic {
