@@ -8,13 +8,14 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class ClientConnection extends Thread {
     private Socket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private final RenderClient renderClient;
-    private final Server server;
+    public final Server server;
 
     public ClientConnection(RenderClient renderClient, Server server) {
         this.renderClient = renderClient;
@@ -35,6 +36,8 @@ public class ClientConnection extends Thread {
             @Override
             public void send(ObjectOutputStream oos) throws IOException {
                 oos.writeObject(server.settingsXML);
+                oos.flush();
+                renderClient.shutdown();
             }
         });
         handlerMap.put(MessageType.GET_TILE.getId(), new RequestHandler() {
@@ -45,18 +48,19 @@ public class ClientConnection extends Thread {
 
             @Override
             public void send(ObjectOutputStream oos) throws IOException {
-                if (!server.tileAvailable()) {
+                Optional<RenderTile> tileOptional = server.getTileIfAvailable();
+
+                if (tileOptional.isPresent()) {
+                    server.assignTileToClient(renderClient.getId(), tileOptional.get());
+
+                    oos.writeInt(MessageType.TILE_AVAILABLE.getId());
+                    oos.writeObject(tileOptional.get());
+                } else {
                     oos.writeInt(MessageType.SCENE_COMPLETE.getId());
                     oos.flush();
 
                     renderClient.shutdown();
-                    return;
                 }
-
-                RenderTile tile = server.assignNextTileToClient(renderClient.getId());
-
-                oos.writeInt(MessageType.TILE_AVAILABLE.getId());
-                oos.writeObject(tile);
             }
         });
         handlerMap.put(MessageType.SUBMIT_TILE.getId(), new RequestHandler() {

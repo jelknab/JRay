@@ -34,20 +34,18 @@ public class Client {
         serverConnection.open();
         serverConnection.RequestSettingsXMLFromServer().ifPresent(settingsXML -> {
             if (loadSettingsDocument(settingsXML)) {
+                this.serverConnection.close();
                 render();
             }
         });
     }
 
     public boolean loadSettingsDocument(String settingsXML) {
-
         System.out.println("Parsing settings file...");
 
         Settings settings = new Settings(Jsoup.parse(settingsXML));
         this.imageSettings = settings.parseImageSettings();
         this.sceneSettings = settings.parseSceneSettings();
-
-        //todo: check if all needed files are available
 
         return true;
     }
@@ -69,6 +67,16 @@ public class Client {
 
             renderThreads[thread].start();
         }
+
+        for (RenderThread renderThread : renderThreads) {
+            try {
+                renderThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("All render threads are done.");
     }
 
     public void finish() {

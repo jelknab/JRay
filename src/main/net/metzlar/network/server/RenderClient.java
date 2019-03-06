@@ -24,6 +24,7 @@ public class RenderClient {
 
     public void shutdown() {
         shutdown = true;
+        connection.server.shutdownClient(id);
     }
 
     public void start() {
