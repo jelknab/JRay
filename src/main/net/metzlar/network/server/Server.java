@@ -81,7 +81,7 @@ public class Server {
     }
 
     private double tileDistanceToCenter(RenderTile tile, int width, int height) {
-        return Math.sqrt(Math.pow(tile.getStartX()-width/2, 2) + Math.pow(tile.getStartY()-height/2, 2));
+        return Math.sqrt(Math.pow(tile.getStartX()-width/2.0, 2) + Math.pow(tile.getStartY()-height/2.0, 2));
     }
 
     private void generateTiles(int width, int height, int tileSize) {

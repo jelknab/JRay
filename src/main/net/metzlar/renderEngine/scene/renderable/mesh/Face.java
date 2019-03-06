@@ -1,6 +1,5 @@
 package net.metzlar.renderEngine.scene.renderable.mesh;
 
-import net.metzlar.renderEngine.scene.material.DebugUV;
 import net.metzlar.renderEngine.scene.renderable.Intersectable;
 import net.metzlar.renderEngine.scene.renderable.Plane;
 import net.metzlar.renderEngine.types.*;

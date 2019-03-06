@@ -168,26 +168,26 @@ public class Mat4 implements Serializable {
 
     @Override
     public String toString() {
-        String ret = "Matrix[\n\t";
+        StringBuilder ret = new StringBuilder("Matrix[\n\t");
 
         for (int i = 0; i < 4; i++) {
             for (int a = 0; a < 4; a++) {
-                ret += Math.round(m[i * 4 + a] * 100) / 100f;
+                ret.append(Math.round(m[i * 4 + a] * 100) / 100f);
 
                 if (a < 3) {
-                    ret += ",\t";
+                    ret.append(",\t");
                 } else {
-                    ret += "\n";
+                    ret.append("\n");
                 }
             }
 
             if (i < 3) {
-                ret += "\t";
+                ret.append("\t");
             } else {
-                ret += "]";
+                ret.append("]");
             }
         }
 
-        return ret;
+        return ret.toString();
     }
 }

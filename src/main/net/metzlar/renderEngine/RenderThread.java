@@ -1,6 +1,5 @@
 package net.metzlar.renderEngine;
 
-import net.metzlar.Settings;
 import net.metzlar.network.client.RenderClient;
 import net.metzlar.renderEngine.types.Color;
 import net.metzlar.renderEngine.types.Ray;

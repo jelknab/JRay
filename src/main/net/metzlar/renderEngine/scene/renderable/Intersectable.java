@@ -1,7 +1,6 @@
 package net.metzlar.renderEngine.scene.renderable;
 
 import net.metzlar.JRay;
-import net.metzlar.renderEngine.scene.material.Material;
 import net.metzlar.renderEngine.types.*;
 
 import java.util.List;

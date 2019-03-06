@@ -5,7 +5,6 @@ import net.metzlar.renderEngine.RenderThread;
 import net.metzlar.renderEngine.scene.SceneSettings;
 import net.metzlar.settings.ImageSettings;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 

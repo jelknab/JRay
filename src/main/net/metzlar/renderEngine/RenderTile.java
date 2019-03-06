@@ -2,7 +2,6 @@ package net.metzlar.renderEngine;
 
 import net.metzlar.renderEngine.types.Color;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.Locale;

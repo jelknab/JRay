@@ -1,7 +1,6 @@
 package net.metzlar.parsers.renderables;
 
 import net.metzlar.parsers.Parser;
-import net.metzlar.renderEngine.scene.renderable.Intersectable;
 import net.metzlar.renderEngine.scene.renderable.RenderObject;
 import net.metzlar.renderEngine.types.Vec3;
 import net.metzlar.renderEngine.scene.renderable.Sphere;

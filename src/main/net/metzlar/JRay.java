@@ -4,7 +4,6 @@ import net.metzlar.network.client.Client;
 import net.metzlar.network.server.Server;
 import net.metzlar.renderEngine.Statistics;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;

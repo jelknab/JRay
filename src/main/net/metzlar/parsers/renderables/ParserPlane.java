@@ -5,7 +5,6 @@ import net.metzlar.renderEngine.scene.renderable.RenderObject;
 import net.metzlar.renderEngine.types.Angle;
 import net.metzlar.renderEngine.types.Vec3;
 import net.metzlar.renderEngine.scene.renderable.Plane;
-import net.metzlar.renderEngine.scene.renderable.Intersectable;
 import org.jsoup.nodes.Element;
 
 public class ParserPlane implements Parser<RenderObject> {

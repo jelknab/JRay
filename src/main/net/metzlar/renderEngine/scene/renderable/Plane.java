@@ -1,7 +1,5 @@
 package net.metzlar.renderEngine.scene.renderable;
 
-import net.metzlar.renderEngine.scene.Object3D;
-import net.metzlar.renderEngine.scene.material.Material;
 import net.metzlar.renderEngine.types.*;
 
 public class Plane extends RenderObject implements Intersectable {

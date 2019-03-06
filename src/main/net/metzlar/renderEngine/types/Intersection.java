@@ -1,6 +1,5 @@
 package net.metzlar.renderEngine.types;
 
-import net.metzlar.renderEngine.scene.renderable.Intersectable;
 import net.metzlar.renderEngine.scene.renderable.RenderObject;
 
 public class Intersection {

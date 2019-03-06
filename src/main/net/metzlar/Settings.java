@@ -3,13 +3,9 @@ package net.metzlar;
 import net.metzlar.parsers.SceneParser;
 import net.metzlar.renderEngine.scene.SceneSettings;
 import net.metzlar.settings.ImageSettings;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.Files;
 
 public class Settings implements Serializable {
     // Image settingsXML

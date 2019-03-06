@@ -1,10 +1,8 @@
 package net.metzlar.network.client;
 
-import net.metzlar.Settings;
 import net.metzlar.network.MessageType;
 import net.metzlar.network.RequestHandler;
 import net.metzlar.renderEngine.RenderTile;
-import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -19,18 +19,8 @@ public abstract class Light extends Object3D implements Serializable {
         this.color = color;
     }
 
-    /**
-     * @param render
-     * @param intersection
-     * @return A color with rgb values between 0 and 1 representing the normalized color over distance
-     */
     public abstract Color getNormIntensity(Render render, Intersection intersection);
 
-    /**
-     * @param render
-     * @param intersection
-     * @return A color with rgb values that represent the raw intensity of the light, good for global illumination
-     */
     public abstract Color getRawIntensity(Render render, Intersection intersection);
 
     public Color getColor() {
