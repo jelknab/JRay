@@ -1,9 +1,9 @@
 <settingsXML>
 	<rendersettings>
 		<resolution>
-			<width>3840</width>
-			<height>2160</height>
-			<subSamples>4</subSamples>
+			<width>512</width>
+			<height>512</height>
+			<subSamples>2</subSamples>
 		</resolution>
 		<blockSize>32</blockSize>
 		<sequence>
@@ -52,10 +52,10 @@
 				<texture class="checker" color="#72f7ff" u="30" v="30" />
 			</material>
 
-			<material class="specular" name="shiny blue">
-				<kd>0.5</kd>
-				<kr>0.5</kr>
-				<base_material>lambert blue</base_material>
+			<material class="specular" name="shiny grey">
+				<kd>0.7</kd>
+				<kr>0.3</kr>
+				<base_material>lambert grey</base_material>
 			</material>
 
 			<material class="specular" name="mirror">
@@ -75,7 +75,7 @@
 	
 		<!-- ########OBJECTS######## -->
 		<objects>
-			<renderable class="modelOBJ" path="Lighting_Challenge_24_theCabin.obj" material="lambert grey">
+			<renderable class="modelOBJ" path="Lighting_Challenge_24_theCabin.obj" material="shiny grey">
 				<position>
 					<x>0</x>
 					<y>0</y>

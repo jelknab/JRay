@@ -12,8 +12,9 @@ public class Sample {
     private Ray ray;
     private Sample parent;
     private double contribution;
-    private Color color = Color.BLACK;
-    private int depth = 0;
+    public double contributionToRoot;
+    public Color color = Color.BLACK;
+    public int depth = 0;
 
     public Sample(Ray ray, Sample parent, double contribution) {
         this.ray = ray;
@@ -21,7 +22,10 @@ public class Sample {
         this.contribution = contribution;
 
         if (parent != null) {
-            depth = parent.depth + 1;
+            this.contributionToRoot = parent.contributionToRoot * contribution;
+            this.depth = parent.depth + 1;
+        } else {
+            this.contributionToRoot = 1d;
         }
     }
 
@@ -29,25 +33,15 @@ public class Sample {
         Intersection intersection = render.sceneSettings.intersectScene(this.ray, render);
 
         if (intersection != null) {
-            this.color = intersection.renderable
-                    .material
-                    .render(intersection, render, this)
-                    .multiply(this.contribution);
+            this.color = intersection.renderable.material
+                    .render(intersection, render, this);
         }
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public int getDepth() {
-        return depth;
     }
 
     public void addColorToParent() {
         if (this.parent == null) return;
 
-        this.parent.addColor(this.color);
+        this.parent.addColor(this.color.multiply(this.contribution));
     }
 
     private void addColor(Color color) {

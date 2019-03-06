@@ -12,19 +12,16 @@ public class Render {
     private Sample cameraSample;
     private Stack<Sample> sampleStack = new Stack<>();
     private Stack<Sample> finishedSampleStack = new Stack<>();
-    private Statistics statistics;
 
     public Render(SceneSettings sceneSettings, Sample cameraSample) {
         this.sceneSettings = sceneSettings;
         this.cameraSample = cameraSample;
 
         this.sampleStack.push(cameraSample);
-
-        this.statistics = new Statistics();
     }
 
     public void addSample(Sample sample) {
-        if (sample.getDepth() > MAX_DEPTH) return;
+        if (sample.depth > MAX_DEPTH || sample.contributionToRoot < 0.01) return;
 
         this.sampleStack.push(sample);
     }
@@ -36,23 +33,9 @@ public class Render {
     }
 
     public Color render() {
-        //long startTimestamp = System.currentTimeMillis();
-
-        while (!sampleStack.empty()) {
-            renderSample();
-        }
-
-        //statistics.addRunTime(System.currentTimeMillis() - startTimestamp);
-
-        while (!finishedSampleStack.empty()) {
-            finishedSampleStack.pop().addColorToParent();
-        }
-
-        return cameraSample.getColor();
-    }
-
-    public Statistics getStatistics() {
-        return statistics;
+        while (!sampleStack.empty()) renderSample();
+        while (!finishedSampleStack.empty()) finishedSampleStack.pop().addColorToParent();
+        return cameraSample.color;
     }
 
     @Override
