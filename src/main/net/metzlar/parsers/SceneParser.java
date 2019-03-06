@@ -4,11 +4,11 @@ import net.metzlar.parsers.lights.LightParserController;
 import net.metzlar.parsers.materials.MaterialParserController;
 import net.metzlar.parsers.renderables.RenderableParserController;
 import net.metzlar.renderEngine.scene.material.Material;
+import net.metzlar.renderEngine.scene.renderable.Intersectable;
 import net.metzlar.renderEngine.types.Vec3;
 import net.metzlar.renderEngine.scene.Camera;
-import net.metzlar.renderEngine.scene.Scene;
+import net.metzlar.renderEngine.scene.SceneSettings;
 import net.metzlar.renderEngine.scene.light.Light;
-import net.metzlar.renderEngine.scene.renderable.Renderable;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -16,22 +16,22 @@ import org.jsoup.select.Elements;
  * Created by Jelle-laptop on 19-Feb-17.
  */
 public class SceneParser {
-    private Scene scene;
+    private SceneSettings sceneSettings;
 
     public SceneParser() {
-        this.scene = new Scene();
+        this.sceneSettings = new SceneSettings();
     }
 
-    public Scene parse(Element sceneElement) {
+    public SceneSettings parse(Element sceneElement) {
 
         // Get Materials
         Elements materialElements = sceneElement.select("materials > material");
         for (Element materialElement : materialElements) {
-            Material material = new MaterialParserController(this.scene).parse(materialElement);
+            Material material = new MaterialParserController(this.sceneSettings).parse(materialElement);
 
             if (material != null) {
                 String name = materialElement.attr("name");
-                scene.addMaterial(name, material);
+                sceneSettings.addMaterial(name, material);
                 material.setName(name);
             }
         }
@@ -39,41 +39,39 @@ public class SceneParser {
         //Get renderables
         Elements objectElements = sceneElement.select("objects > renderable");
         for (Element objectElement : objectElements) {
-            Renderable renderable = new RenderableParserController(this.scene).parse(objectElement);
+            Intersectable renderable = new RenderableParserController(this.sceneSettings).parse(objectElement);
 
             if (renderable != null) {
-                scene.addRenderable(renderable);
+                sceneSettings.addRenderable(renderable);
             }
         }
 
         //Get Lights
         Elements lightElements = sceneElement.select("lights > light");
         for (Element lightElement : lightElements) {
-            Light light = new LightParserController(this.scene).parse(lightElement);
+            Light light = new LightParserController(this.sceneSettings).parse(lightElement);
 
             if (light != null) {
-                scene.addLight(light);
+                sceneSettings.addLight(light);
             }
         }
 
-        //Get camera settings
-        this.scene.setCamera(
-                new Camera(
-                        new Vec3(
-                                Double.parseDouble(sceneElement.select("camera > position > x").html()),
-                                Double.parseDouble(sceneElement.select("camera > position > y").html()),
-                                Double.parseDouble(sceneElement.select("camera > position > z").html())
-                        ),
-                        Double.parseDouble(sceneElement.select("camera > angle > pitch").html()),
-                        Double.parseDouble(sceneElement.select("camera > angle > yaw").html()),
-                        Double.parseDouble(sceneElement.select("camera > angle > roll").html()),
-                        Double.parseDouble(sceneElement.select("camera > fov").html())
-                )
+        //Get camera settingsXML
+        this.sceneSettings.camera = new Camera(
+                new Vec3(
+                        Double.parseDouble(sceneElement.select("camera > position > x").html()),
+                        Double.parseDouble(sceneElement.select("camera > position > y").html()),
+                        Double.parseDouble(sceneElement.select("camera > position > z").html())
+                ),
+                Double.parseDouble(sceneElement.select("camera > angle > pitch").html()),
+                Double.parseDouble(sceneElement.select("camera > angle > yaw").html()),
+                Double.parseDouble(sceneElement.select("camera > angle > roll").html()),
+                Double.parseDouble(sceneElement.select("camera > fov").html())
         );
 
         //Init materials
-        scene.getMaterials().forEach((s, material) -> material.init(scene));
+        sceneSettings.materials.forEach((s, material) -> material.init(sceneSettings));
 
-        return this.scene;
+        return this.sceneSettings;
     }
 }

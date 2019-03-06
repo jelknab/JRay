@@ -1,15 +1,16 @@
 package net.metzlar.parsers.renderables;
 
 import net.metzlar.parsers.Parser;
+import net.metzlar.renderEngine.scene.renderable.RenderObject;
 import net.metzlar.renderEngine.types.Angle;
 import net.metzlar.renderEngine.types.Vec3;
 import net.metzlar.renderEngine.scene.renderable.Plane;
-import net.metzlar.renderEngine.scene.renderable.Renderable;
+import net.metzlar.renderEngine.scene.renderable.Intersectable;
 import org.jsoup.nodes.Element;
 
-public class ParserPlane implements Parser<Renderable> {
+public class ParserPlane implements Parser<RenderObject> {
     @Override
-    public Renderable parse(Element docElement) {
+    public RenderObject parse(Element docElement) {
         return new Plane(
                 new Vec3(
                         Double.parseDouble(docElement.select("position > x").html()),
@@ -20,8 +21,7 @@ public class ParserPlane implements Parser<Renderable> {
                         Double.parseDouble(docElement.select("angle > pitch").html()),
                         Double.parseDouble(docElement.select("angle > yaw").html()),
                         Double.parseDouble(docElement.select("angle > roll").html())
-                ),
-                Double.parseDouble(docElement.select("texture_size").html())
+                )
         );
     }
 }

@@ -2,10 +2,9 @@ package net.metzlar.parsers.renderables;
 
 import net.metzlar.JRay;
 import net.metzlar.parsers.Parser;
-import net.metzlar.renderEngine.scene.renderable.Face;
-import net.metzlar.renderEngine.scene.renderable.Model;
-import net.metzlar.renderEngine.scene.renderable.Renderable;
-import net.metzlar.renderEngine.types.Angle;
+import net.metzlar.renderEngine.scene.renderable.RenderObject;
+import net.metzlar.renderEngine.scene.renderable.mesh.Face;
+import net.metzlar.renderEngine.scene.renderable.mesh.Mesh;
 import net.metzlar.renderEngine.types.Vec2;
 import net.metzlar.renderEngine.types.Vec3;
 import org.jsoup.nodes.Element;
@@ -15,7 +14,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParserOBJ implements Parser<Renderable> {
+public class ParserOBJ implements Parser<RenderObject> {
     private List<Vec3> allVertices = new ArrayList<>();
     private List<Vec2> allTextureCoordinates = new ArrayList<>();
     private List<Vec3> allVertexNormals = new ArrayList<>();
@@ -24,8 +23,8 @@ public class ParserOBJ implements Parser<Renderable> {
     private double scale = 1;
 
     @Override
-    public Renderable parse(Element docElement) {
-        Model model = null;
+    public RenderObject parse(Element docElement) {
+        Mesh mesh = null;
 
         String path = docElement.attr("path");
 
@@ -67,30 +66,24 @@ public class ParserOBJ implements Parser<Renderable> {
                 }
             }
 
-            model = new Model(
+            List<Face> faces = new ArrayList<>();
+            for (TempFace tempFace : tempFaces) {
+                faces.addAll(tempFace.triangulate());
+            }
+
+            mesh = new Mesh(
                     new Vec3(
                             Double.parseDouble(docElement.select("position > x").html()),
                             Double.parseDouble(docElement.select("position > y").html()),
                             Double.parseDouble(docElement.select("position > z").html())
                     ),
-                    new Angle(
-                            Double.parseDouble(docElement.select("orientation > p").html()),
-                            Double.parseDouble(docElement.select("orientation > y").html()),
-                            Double.parseDouble(docElement.select("orientation > r").html())
-                    ),
-                    null
+                    faces
             );
-
-            for (TempFace tempFace : tempFaces) {
-                model.addFaces(tempFace.triangulate());
-            }
-
-            model.makeTree();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return model;
+        return mesh;
     }
 
     private Vec3 parseVertex(String[] strings) {

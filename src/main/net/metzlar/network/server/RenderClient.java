@@ -11,11 +11,11 @@ public class RenderClient {
     private Socket socket;
     private ClientConnection connection;
 
-    public RenderClient(Socket socket, ClientManager clientManager) throws IOException {
+    public RenderClient(Socket socket, Server server) throws IOException {
         this.socket = socket;
         this.id = UUID.randomUUID().toString();
 
-        this.connection = new ClientConnection(this, clientManager);
+        this.connection = new ClientConnection(this, server);
     }
 
     public String getId() {

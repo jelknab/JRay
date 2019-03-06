@@ -1,14 +1,21 @@
 package net.metzlar;
 
 import net.metzlar.network.client.Client;
-import net.metzlar.network.server.ClientManager;
+import net.metzlar.network.server.Server;
+import net.metzlar.renderEngine.Statistics;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.nio.file.Files;
 
 public class JRay {
+    public static final Statistics statistics = new Statistics();
+
     public static final File HOME_DIRECTORY = new File(FileSystemView.getFileSystemView().getDefaultDirectory().getPath(), "/JRay");
     public static final File MODEL_DIRECTORY = new File(HOME_DIRECTORY, "models");
 
@@ -18,7 +25,7 @@ public class JRay {
      *             -h       start as server
      *             -o       start server only (no rendering on host)
      *             -p       port on which the server is hosted (default 9090)
-     *             -s       full path to scene file
+     *             -s       full path to sceneSettings file
      *             --save   Save image
      */
     public static void main(String[] args) {
@@ -102,28 +109,35 @@ public class JRay {
 
     private static boolean runServer(File settingsFile, int port, boolean saveOnFinish) {
         Settings settings;
+        String settingsXML;
 
         if (settingsFile == null) {
-            System.out.println("No scene file specified.");
+            System.out.println("No sceneSettings file specified.");
             return false;
         } else if (!settingsFile.exists()) {
-            System.out.printf("Scene file at %s does not exist.", settingsFile.getAbsolutePath());
+            System.out.printf("SceneSettings file at %s does not exist.", settingsFile.getAbsolutePath());
             return false;
         } else {
             try {
-                settings = new Settings(settingsFile);
+                settingsXML = new String(Files.readAllBytes(settingsFile.toPath()));
+            } catch (FileNotFoundException e) {
+                System.err.println("Could not find settingsXML file.");
+                e.printStackTrace();
+                return false;
             } catch (IOException e) {
-                System.err.println("Could not load settings file.");
+                System.err.println("Could not loadSettingsDocument settingsXML file.");
                 e.printStackTrace();
                 return false;
             }
         }
 
-        System.out.printf("Using scene: %s\n", settingsFile.getName());
+        settings = new Settings(Jsoup.parse(settingsXML));
 
-        Image image = new Image(settings.getImageWidth(), settings.getImageHeight());
+        System.out.printf("Using sceneSettings: %s\n", settingsFile.getName());
+
+        Image image = new Image(settings.parseImageSettings());
         new GUI(image);
-        new ClientManager(settings, image, saveOnFinish).startServer(port);
+        new Server(settingsXML, image, saveOnFinish).start(port);
 
         return true;
     }

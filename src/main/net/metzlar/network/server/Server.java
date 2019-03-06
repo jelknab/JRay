@@ -1,7 +1,7 @@
 package net.metzlar.network.server;
 
 import net.metzlar.Image;
-import net.metzlar.Settings;
+import net.metzlar.JRay;
 import net.metzlar.renderEngine.RenderTile;
 
 import java.io.File;
@@ -17,27 +17,27 @@ import java.util.concurrent.PriorityBlockingQueue;
 /**
  * Controls the writing to the final image and manages the cloud
  */
-public class ClientManager {
+public class Server {
     private Image image;
 
     private Queue<RenderTile> remainingTiles;
     private Queue<RenderTile> activeTiles = new ConcurrentLinkedQueue<>();
     private Map<String, RenderClient> clients = new HashMap<>();
 
-    private Settings settings;
+    public String settingsXML;
     private SocketServer server;
 
     private boolean finished = false;
     private boolean saveOnFinished;
 
-    public ClientManager(Settings settings, Image image, boolean saveOnFinished) {
-        this.settings = settings;
+    public Server(String settingsXML, Image image, boolean saveOnFinished) {
+        this.settingsXML = settingsXML;
         this.image = image;
         this.saveOnFinished = saveOnFinished;
     }
 
-    public void startServer(int port) {
-        generateTiles(this.settings.getImageWidth(), this.settings.getImageHeight(), this.settings.getTileSize());
+    public void start(int port) {
+        generateTiles(this.image.settings.imageWidth, this.image.settings.imageHeight, this.image.settings.tileSize);
         server = new SocketServer(port, this);
         server.start();
     }
@@ -132,16 +132,13 @@ public class ClientManager {
             }
 
             clients.values().forEach(RenderClient::shutdown);
+            System.out.println(JRay.statistics);
 
             finished = true;
             return true;
         }
 
         return false;
-    }
-
-    public Settings getSettings() {
-        return settings;
     }
 
     public void shutdownClient(String id) {

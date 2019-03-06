@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.Locale;
 
 public class Vec3 implements Serializable {
-    private double x;
-    private double y;
-    private double z;
+    private float x;
+    private float y;
+    private float z;
 
     public Vec3() {
         this.x = 0f;
@@ -15,9 +15,9 @@ public class Vec3 implements Serializable {
     }
 
     public Vec3(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.x = (float) x;
+        this.y = (float) y;
+        this.z = (float) z;
     }
 
     public double norm() {
@@ -105,27 +105,34 @@ public class Vec3 implements Serializable {
         );
     }
 
-    public double getX() {
+    public float getX() {
         return x;
     }
 
     public void setX(double x) {
-        this.x = x;
+        this.x = (float)x;
     }
+    public void setX(float x) { this.x = x; }
 
-    public double getY() {
+    public float getY() {
         return y;
     }
 
     public void setY(double y) {
+        this.y = (float)y;
+    }
+    public void setY(float y) {
         this.y = y;
     }
 
-    public double getZ() {
+    public float getZ() {
         return z;
     }
 
     public void setZ(double z) {
+        this.z = (float)z;
+    }
+    public void setZ(float z) {
         this.z = z;
     }
 

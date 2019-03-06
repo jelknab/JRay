@@ -1,24 +1,21 @@
 package net.metzlar.renderEngine;
 
-import net.metzlar.renderEngine.scene.Scene;
+import net.metzlar.renderEngine.scene.SceneSettings;
 import net.metzlar.renderEngine.types.Color;
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.Stack;
 
 public class Render {
     private static final int MAX_DEPTH = 255;
 
-    private Scene scene;
+    public SceneSettings sceneSettings;
     private Sample cameraSample;
     private Stack<Sample> sampleStack = new Stack<>();
     private Stack<Sample> finishedSampleStack = new Stack<>();
     private Statistics statistics;
 
-    public Render(Scene scene, Sample cameraSample) {
-        this.scene = scene;
+    public Render(SceneSettings sceneSettings, Sample cameraSample) {
+        this.sceneSettings = sceneSettings;
         this.cameraSample = cameraSample;
 
         this.sampleStack.push(cameraSample);
@@ -56,10 +53,6 @@ public class Render {
 
     public Statistics getStatistics() {
         return statistics;
-    }
-
-    public Scene getScene() {
-        return scene;
     }
 
     @Override

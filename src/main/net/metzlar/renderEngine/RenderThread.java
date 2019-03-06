@@ -7,13 +7,14 @@ import net.metzlar.renderEngine.types.Ray;
 import net.metzlar.renderEngine.types.Vec2;
 import net.metzlar.renderEngine.types.Vec3;
 import net.metzlar.renderEngine.scene.Camera;
-import net.metzlar.renderEngine.scene.Scene;
+import net.metzlar.renderEngine.scene.SceneSettings;
+import net.metzlar.settings.ImageSettings;
 
 import java.util.Random;
 
 public class RenderThread extends Thread {
-    private Statistics statistics;
     private RenderClient renderclient;
+    private Vec2[][] subSampleJitter;
 
     Random random = new Random();
 
@@ -25,45 +26,47 @@ public class RenderThread extends Thread {
     public void run() {
         super.run();
 
-        renderclient.requestTile();
+        int subSamples = this.renderclient.client.imageSettings.subSamples;
+
+        this.subSampleJitter = new Vec2[subSamples][subSamples];
+        for (int y = 0; y < subSamples; y++)
+            for (int x = 0; x < subSamples; x++)
+                this.subSampleJitter[x][y] = jitterSubsample(x, y, subSamples);
+
+        this.renderclient.requestTile();
 
         while (renderclient.hasActiveTile()) {
-            this.statistics = new Statistics();
-
             render();
 
-            renderclient.submitTile();
-            renderclient.requestTile();
+            this.renderclient.submitTile();
+            this.renderclient.requestTile();
         }
     }
 
     private void render() {
-        Settings settings = this.renderclient.getClient().getSettings();
-        RenderTile tile = this.renderclient.getActiveTile();
-        Scene scene = settings.getScene();
-        Camera camera = scene.getCamera();
-
-        long renderStartTimestamp = System.currentTimeMillis();
+        RenderTile tile = this.renderclient.activeTile;
+        ImageSettings imageSettings = this.renderclient.client.imageSettings;
+        SceneSettings sceneSettings = this.renderclient.client.sceneSettings;
+        Camera camera = sceneSettings.camera;
 
         double fov = camera.getFov();
-        double fovMulRatio = fov * settings.getAspectRatio();
+        double fovMulRatio = fov * imageSettings.aspectRatio;
 
         int position; // Represents position of pixel RELATIVE to the tile
-        while ((position = this.renderclient.getActiveTile().takePosition()) !=-1) {
+        while ((position = this.renderclient.activeTile.takePosition()) !=-1) {
             Color color = new Color();
 
             //x and y represent the GLOBAL 2d position of the pixel
             int pixelX = tile.getStartX() + position % tile.getWidth();
             int pixelY = tile.getStartY() + position / tile.getWidth();
 
-            for (int y = 0; y < settings.getSubSamples(); y++) {
-                for (int x = 0; x < settings.getSubSamples(); x++) {
-                    Vec2 subSample = jitterSubsample(pixelX, pixelY, x, y, settings.getSubSamples());
-                    //System.out.println(subSample.getY());
+            for (int y = 0; y < imageSettings.subSamples; y++) {
+                for (int x = 0; x < imageSettings.subSamples; x++) {
+                    //Vec2 subSample = jitterSubsample(pixelX, pixelY, x, y, settingsXML.getSubSamples());
 
                     //px and py are camera space coordinates
-                    double px = (2 * ((subSample.getX()) / settings.getImageWidth()) - 1) * fovMulRatio;
-                    double py = (1 - 2 * ((subSample.getY()) / settings.getImageHeight())) * fov;
+                    double px = (2 * ((pixelX + subSampleJitter[x][y].getX()) / imageSettings.imageWidth) - 1) * fovMulRatio;
+                    double py = (1 - 2 * ((pixelY + subSampleJitter[x][y].getY()) / imageSettings.imageHeight)) * fov;
 
                     //Get an actual 3d direction vector of our camera space coordinates by multiplying them by the camera matrix
                     Vec3 direction = camera.getMatrix().multiply(new Vec3(px, py, -1));
@@ -72,12 +75,10 @@ public class RenderThread extends Thread {
                     Ray cameraRay = new Ray(camera.getPosition(), direction);
                     Sample cameraSample = new Sample(cameraRay, null, 1);
 
-                    //System.out.println("..");
-
                     color = color.add(
-                            new Render(scene, cameraSample)
+                            new Render(sceneSettings, cameraSample)
                                     .render()
-                                    .multiply(1d / (settings.getSubSamples()*settings.getSubSamples()))
+                                    .multiply(1d / (imageSettings.subSamples*imageSettings.subSamples))
                     );
                 }
             }
@@ -85,16 +86,12 @@ public class RenderThread extends Thread {
 
 
             tile.submit(position, color);
-
-            //renderclient.getClient().getStatistics().merge(render.getStatistics());
         }
-
-        //renderclient.getClient().getStatistics().addRunTime(System.currentTimeMillis() - renderStartTimestamp);
     }
 
-    private Vec2 jitterSubsample(int originalX, int originalY, int x, int y, int subSamples) {
-        float newX = originalX + ((1f / subSamples) * x) + (random.nextFloat()/subSamples);
-        float newY = originalY + ((1f / subSamples) * y) + (random.nextFloat()/subSamples);
+    private Vec2 jitterSubsample(int x, int y, int subSamples) {
+        float newX = ((1f / subSamples) * x) + (random.nextFloat()/subSamples);
+        float newY = ((1f / subSamples) * y) + (random.nextFloat()/subSamples);
 
         return new Vec2(newX, newY);
     }

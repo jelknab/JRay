@@ -26,16 +26,14 @@ public class Sample {
     }
 
     public void render(Render render) {
-        Intersection intersection = render.getScene().intersectScene(this.ray, render);
+        Intersection intersection = render.sceneSettings.intersectScene(this.ray, render);
 
         if (intersection != null) {
-            this.color = intersection.getRenderable()
-                    .getMaterial()
+            this.color = intersection.renderable
+                    .material
                     .render(intersection, render, this)
                     .multiply(this.contribution);
         }
-
-        render.getStatistics().addSamples(1);
     }
 
     public Color getColor() {

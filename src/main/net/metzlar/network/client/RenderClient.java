@@ -6,20 +6,20 @@ import java.io.IOException;
 public class RenderClient {
 
     private ServerConnection serverConnection;
-    private Client client;
-    private RenderTile activeTile;
+    public Client client;
+    public RenderTile activeTile;
 
     public RenderClient(Client client) {
         this.client = client;
     }
 
     public void openConnection() throws IOException {
-        serverConnection = new ServerConnection(client.getHost(), client.getPort(), client);
+        serverConnection = new ServerConnection(client.host, client.port, client);
         serverConnection.open();
     }
 
     public void requestTile() {
-        serverConnection.requestTile()
+        serverConnection.getOptionalTileFromServer()
                 .ifPresentOrElse(
                         tile -> this.activeTile = tile,
                         () -> activeTile = null
@@ -30,15 +30,7 @@ public class RenderClient {
         serverConnection.submitTile(activeTile);
     }
 
-    public Client getClient() {
-        return client;
-    }
-
     public boolean hasActiveTile() {
         return activeTile != null;
-    }
-
-    public RenderTile getActiveTile() {
-        return activeTile;
     }
 }

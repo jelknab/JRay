@@ -2,7 +2,7 @@ package net.metzlar.renderEngine.scene.material;
 
 import net.metzlar.renderEngine.Render;
 import net.metzlar.renderEngine.Sample;
-import net.metzlar.renderEngine.scene.Scene;
+import net.metzlar.renderEngine.scene.SceneSettings;
 import net.metzlar.renderEngine.types.Color;
 import net.metzlar.renderEngine.types.Intersection;
 import net.metzlar.renderEngine.types.Ray;
@@ -24,8 +24,8 @@ public class Specular extends Material {
 
 
     @Override
-    public void init(Scene scene) {
-        baseMaterial = scene.getMaterial(inputMaterialName);
+    public void init(SceneSettings sceneSettings) {
+        baseMaterial = sceneSettings.materials.get(inputMaterialName);
 
         if (baseMaterial == null) {
             baseMaterial = DEFAULT;
@@ -34,7 +34,7 @@ public class Specular extends Material {
 
     @Override
     public Color render(Intersection intersection, Render render, Sample sample) {
-        Ray reflectedRay = new Ray(intersection.getHitPos(), reflect(intersection));
+        Ray reflectedRay = new Ray(intersection.hitPos, reflect(intersection));
 
         Sample reflectionSample = new Sample(reflectedRay, sample, this.kr);
 
@@ -44,12 +44,12 @@ public class Specular extends Material {
     }
 
     private Vec3 reflect(Intersection intersection) {
-        Vec3 toCamera = intersection.getRay().getDirection().multiply(-1);
+        Vec3 toCamera = intersection.ray.direction.multiply(-1);
 
-        return intersection.getNormal()
+        return intersection.normal
                 .multiply(toCamera)
                 .multiply(2)
-                .multiply(intersection.getNormal())
+                .multiply(intersection.normal)
                 .subtract(toCamera);
     }
 }

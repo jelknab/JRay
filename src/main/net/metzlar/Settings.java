@@ -1,7 +1,8 @@
 package net.metzlar;
 
 import net.metzlar.parsers.SceneParser;
-import net.metzlar.renderEngine.scene.Scene;
+import net.metzlar.renderEngine.scene.SceneSettings;
+import net.metzlar.settings.ImageSettings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -11,56 +12,24 @@ import java.io.Serializable;
 import java.nio.file.Files;
 
 public class Settings implements Serializable {
-    // Image settings
-    private int imageWidth;
-    private int imageHeight;
-    private double aspectRatio;
-    private int tileSize;
-    private int subSamples;
+    // Image settingsXML
 
-    private Scene scene;
+    private final Document settingsDocument;
 
-    Settings(File settingsFile) throws IOException {
-        this(Files.readAllBytes(settingsFile.toPath()));
+    public Settings(Document settingsDocument) {
+        this.settingsDocument = settingsDocument;
     }
 
-    private Settings(byte[] settingsBytes) {
-        this(Jsoup.parse(new String(settingsBytes)));
+    public ImageSettings parseImageSettings() {
+        return new ImageSettings(
+                Integer.parseInt(settingsDocument.select("settingsXML > rendersettings > resolution > width").html()),
+                Integer.parseInt(settingsDocument.select("settingsXML > rendersettings > resolution > height").html()),
+                Integer.parseInt(settingsDocument.select("rendersettings blockSize").html()),
+                Integer.parseInt(settingsDocument.select("settingsXML > rendersettings > resolution > subSamples").html())
+        );
     }
 
-    private Settings(Document settingsDocument) {
-        this.imageWidth = Integer.parseInt(settingsDocument.select("settings > rendersettings > resolution > width").html());
-        this.imageHeight = Integer.parseInt(settingsDocument.select("settings > rendersettings > resolution > height").html());
-        this.subSamples = Integer.parseInt(settingsDocument.select("settings > rendersettings > resolution > subSamples").html());
-
-        this.aspectRatio = (double) this.imageWidth / this.imageHeight;
-        this.tileSize = Integer.parseInt(settingsDocument.select("rendersettings blockSize").html());
-
-        this.scene = new SceneParser().parse(settingsDocument.select("settings > scene").first());
-
-    }
-
-    public int getImageWidth() {
-        return imageWidth;
-    }
-
-    public int getImageHeight() {
-        return imageHeight;
-    }
-
-    public double getAspectRatio() {
-        return aspectRatio;
-    }
-
-    public int getTileSize() {
-        return tileSize;
-    }
-
-    public Scene getScene() {
-        return scene;
-    }
-
-    public int getSubSamples() {
-        return subSamples;
+    public SceneSettings parseSceneSettings() {
+        return new SceneParser().parse(settingsDocument.select("settingsXML > sceneSettings").first());
     }
 }

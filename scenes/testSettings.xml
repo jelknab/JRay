@@ -1,27 +1,27 @@
-<settings>
+<settingsXML>
 	<rendersettings>
 		<resolution>
-			<width>512</width>
-			<height>512</height>
-			<subSamples>1</subSamples>
+			<width>3840</width>
+			<height>2160</height>
+			<subSamples>4</subSamples>
 		</resolution>
-		<blockSize>64</blockSize>
+		<blockSize>32</blockSize>
 		<sequence>
 			<start>0</start>
 			<end>240</end>
 		</sequence>
 	</rendersettings>
 	
-	<scene>
+	<sceneSettings>
 		<!-- ########CAMERA######## -->
 		<camera>
 			<position>
-				<x>0</x>
-				<y>7.5</y>
+				<x>3</x>
+				<y>-2.1</y>
 				<z>10</z>
 			</position>
 			<angle>
-				<pitch>-25</pitch>
+				<pitch>10</pitch>
 				<yaw>0</yaw>
 				<roll>0</roll>
 			</angle>
@@ -52,17 +52,20 @@
 				<texture class="checker" color="#72f7ff" u="30" v="30" />
 			</material>
 
-			<material class="specular" name="shiny red">
+			<material class="specular" name="shiny blue">
 				<kd>0.5</kd>
 				<kr>0.5</kr>
-				<base_material></base_material>
-				<texture class="checker" color="#FFFFFF" u="30" v="30" />
+				<base_material>lambert blue</base_material>
 			</material>
 
 			<material class="specular" name="mirror">
 				<kd>0</kd>
 				<kr>1</kr>
 				<base_material></base_material>
+			</material>
+
+			<material class="lambert" name="lambert blue">
+				<texture class="solid color" color="#0000FF" />
 			</material>
 
             <material class="lambert" name="lambert grey">
@@ -72,10 +75,10 @@
 	
 		<!-- ########OBJECTS######## -->
 		<objects>
-			<renderable class="modelOBJ" path="dragon.obj" material="green">
+			<renderable class="modelOBJ" path="Lighting_Challenge_24_theCabin.obj" material="lambert grey">
 				<position>
 					<x>0</x>
-					<y>5</y>
+					<y>0</y>
 					<z>0</z>
 				</position>
 
@@ -85,86 +88,76 @@
 					<r>0</r>
 				</orientation>
 
-				<scale>0.5</scale>
+				<scale>1</scale>
 			</renderable>
 
-			<renderable class="sphere" name="sphere 02" material="mirror">
-				<position>
-					<x>2.59</x>
-					<y>0</y>
-					<z>-5</z>
-				</position>
+			<!--<renderable class="sphere" name="sphere 02" material="mirror">-->
+				<!--<position>-->
+					<!--<x>2.59</x>-->
+					<!--<y>0</y>-->
+					<!--<z>-5</z>-->
+				<!--</position>-->
 
-				<radius>2</radius>
-			</renderable>
-			<renderable class="sphere" name="sphere 03" material="mirror">
-				<position>
-					<x>-2.59</x>
-					<y>0</y>
-					<z>-5</z>
-				</position>
+				<!--<radius>2</radius>-->
+			<!--</renderable>-->
+			<!--<renderable class="sphere" name="sphere 03" material="mirror">-->
+				<!--<position>-->
+					<!--<x>-2.59</x>-->
+					<!--<y>0</y>-->
+					<!--<z>-5</z>-->
+				<!--</position>-->
 
-				<radius>2</radius>
-			</renderable>
+				<!--<radius>2</radius>-->
+			<!--</renderable>-->
 			
-			<renderable class="plane" material="lambert grey">
-				<position> <x>0</x>  <y>-4</y> <z>0</z> </position>
-				<angle> <pitch>0</pitch> <yaw>0</yaw> <roll>0</roll> </angle>
-				<texture_size>0.3</texture_size>
-			</renderable>
-			
-			<renderable class="plane" material="mirror">
-				<position> <x>0</x>  <y>-4</y> <z>-10</z> </position>
-				<angle> <pitch>-90</pitch> <yaw>0</yaw> <roll>0</roll> </angle>
-				<texture_size>0.1</texture_size>
-			</renderable>
-			
-			<renderable class="plane" material="green">
-				<position> <x>-10</x>  <y>-4</y> <z>0</z> </position>
-				<angle> <pitch>0</pitch> <yaw>0</yaw> <roll>90</roll> </angle>
-				<texture_size>0.1</texture_size>
-			</renderable>
-			
-			<renderable class="plane" material="red">
-				<position> <x>10</x>  <y>-4</y> <z>0</z> </position>
-				<angle> <pitch>0</pitch> <yaw>0</yaw> <roll>-90</roll> </angle>
-				<texture_size>0.1</texture_size>
-			</renderable>
+			<!--<renderable class="plane" material="lambert grey">-->
+				<!--<position> <x>0</x>  <y>-4</y> <z>0</z> </position>-->
+				<!--<angle> <pitch>0</pitch> <yaw>0</yaw> <roll>0</roll> </angle>-->
+				<!--<texture_size>0.3</texture_size>-->
+			<!--</renderable>-->
+			<!---->
+			<!--<renderable class="plane" material="mirror">-->
+				<!--<position> <x>0</x>  <y>-4</y> <z>-10</z> </position>-->
+				<!--<angle> <pitch>-90</pitch> <yaw>0</yaw> <roll>0</roll> </angle>-->
+				<!--<texture_size>0.1</texture_size>-->
+			<!--</renderable>-->
+			<!---->
+			<!--<renderable class="plane" material="green">-->
+				<!--<position> <x>-10</x>  <y>-4</y> <z>0</z> </position>-->
+				<!--<angle> <pitch>0</pitch> <yaw>0</yaw> <roll>90</roll> </angle>-->
+				<!--<texture_size>0.1</texture_size>-->
+			<!--</renderable>-->
+			<!---->
+			<!--<renderable class="plane" material="red">-->
+				<!--<position> <x>10</x>  <y>-4</y> <z>0</z> </position>-->
+				<!--<angle> <pitch>0</pitch> <yaw>0</yaw> <roll>-90</roll> </angle>-->
+				<!--<texture_size>0.1</texture_size>-->
+			<!--</renderable>-->
 		</objects>
 		
 		<!-- ########LIGHTS######## -->
 		<lights>
 			<light class="point light">
 				<position>
-					<x>$sin(0 * pi/180) * 5</x>
+					<x>-3</x>
 					<y>5</y>
-					<z>$cos(0 * pi/180) * 5</z>
+					<z>10</z>
 				</position>
 
-                <color>#5555ff</color>
-				<intensity>500</intensity>
+                <color>#ffffff</color>
+				<intensity>1000</intensity>
 			</light>
-            <light class="point light">
-                <position>
-					<x>$sin(120 * pi/180) * 5</x>
-					<y>5</y>
-					<z>$cos(120 * pi/180) * 5</z>
-                </position>
+			<!--<light class="point light">-->
+				<!--<position>-->
+					<!--<x>0</x>-->
+					<!--<y>10</y>-->
+					<!--<z>7</z>-->
+				<!--</position>-->
 
-                <color>#55ff55</color>
-                <intensity>500</intensity>
-            </light>
-            <light class="point light">
-                <position>
-					<x>$sin(240 * pi/180) * 5</x>
-					<y>5</y>
-					<z>$cos(240 * pi/180) * 5</z>
-                </position>
-
-                <color>#ff5555</color>
-                <intensity>500</intensity>
-            </light>
+                <!--<color>#ffffff</color>-->
+				<!--<intensity>1000</intensity>-->
+			<!--</light>-->
 
         </lights>
-	</scene>
-</settings>
+	</sceneSettings>
+</settingsXML>

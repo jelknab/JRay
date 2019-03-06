@@ -2,6 +2,7 @@ package net.metzlar;
 
 import net.metzlar.renderEngine.RenderTile;
 import net.metzlar.renderEngine.types.Color;
+import net.metzlar.settings.ImageSettings;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -15,16 +16,15 @@ public class Image {
         void onChanged();
     }
 
-    private int width;
-    private int height;
+    public ImageSettings settings;
+
     private Color[][] image;
     private ArrayList<ImageListener> listeners;
 
-    public Image(int width, int height) {
-        this.width = width;
-        this.height = height;
+    public Image(ImageSettings settings) {
+        this.settings = settings;
 
-        this.image = new Color[width][height];
+        this.image = new Color[settings.imageWidth][settings.imageHeight];
         this.listeners = new ArrayList<>();
     }
 
@@ -50,10 +50,10 @@ public class Image {
     }
 
     public BufferedImage getBufferedImage(float exposure) {
-        BufferedImage returnImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage returnImage = new BufferedImage(settings.imageWidth, settings.imageHeight, BufferedImage.TYPE_INT_ARGB);
 
-        for (int x = 0; x < this.width; x++) {
-            for (int y = 0; y < this.height; y++) {
+        for (int x = 0; x < this.settings.imageWidth; x++) {
+            for (int y = 0; y < this.settings.imageHeight; y++) {
                 Color color = this.image[x][y];
 
                 if (color != null) {

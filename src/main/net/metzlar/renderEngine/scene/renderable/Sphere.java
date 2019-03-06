@@ -1,24 +1,24 @@
 package net.metzlar.renderEngine.scene.renderable;
 
 import net.metzlar.renderEngine.scene.material.Material;
-import net.metzlar.renderEngine.scene.material.Phong;
-import net.metzlar.renderEngine.scene.texture.CheckerBoard;
 import net.metzlar.renderEngine.types.*;
 
-public class Sphere extends Renderable {
+import java.io.Serializable;
+
+public class Sphere extends RenderObject implements Intersectable, Serializable {
     private static final double PI2 = Math.PI * 2d;
 
     private double radius;
 
     public Sphere(Vec3 position, double radius) {
-        super(position, Material.DEFAULT);
+        super(position);
         this.radius = radius;
     }
 
-    public Intersection intersectRay(Ray r) {
-        Vec3 oc = r.getOrigin().subtract(this.getPosition());
-        double a = r.getDirection().dot(r.getDirection());
-        double b = 2.0 * oc.dot(r.getDirection());
+    public Intersection intersectRay(Ray ray) {
+        Vec3 oc = ray.origin.subtract(this.position);
+        double a = ray.direction.dot(ray.direction);
+        double b = 2.0 * oc.dot(ray.direction);
         double c = oc.dot(oc) - radius*radius;
         double discriminant = b*b - 4*a*c;
 
@@ -27,8 +27,8 @@ public class Sphere extends Renderable {
         }
 
         double dist = (-b - Math.sqrt(discriminant)) / (2.0*a);
-        Vec3 hitPos = r.getOrigin().add(r.getDirection().multiply(dist));
-        Vec3 nHit = hitPos.subtract(this.getPosition()).getNormalized();
+        Vec3 hitPos = ray.origin.add(ray.direction.multiply(dist));
+        Vec3 nHit = hitPos.subtract(this.position).getNormalized();
 
         //get texture hitpos
         Vec2 texturePosition = new Vec2(
@@ -36,6 +36,7 @@ public class Sphere extends Renderable {
                 (0.5d - Math.asin(nHit.getY()) / Math.PI) * radius
         );
 
-        return new Intersection(r, hitPos, nHit, texturePosition, this, dist);
+        return new Intersection(ray, hitPos, nHit, texturePosition, this, dist);
     }
+
 }

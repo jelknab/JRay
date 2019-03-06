@@ -1,16 +1,17 @@
 package net.metzlar.renderEngine.types;
 
-import net.metzlar.renderEngine.scene.renderable.Renderable;
+import net.metzlar.renderEngine.scene.renderable.Intersectable;
+import net.metzlar.renderEngine.scene.renderable.RenderObject;
 
 public class Intersection {
-    private Ray ray;
-    private Vec3 hitPos;
-    private Vec3 normal;
-    private Vec2 texturePos;
-    private Renderable renderable;
-    private double distance;
+    public Ray ray;
+    public Vec3 hitPos;
+    public Vec3 normal;
+    public Vec2 texturePos;
+    public RenderObject renderable;
+    public double distance;
 
-    public Intersection(Ray ray, Vec3 hitPos, Vec3 normal, Vec2 texturePos, Renderable renderable, double distance) {
+    public Intersection(Ray ray, Vec3 hitPos, Vec3 normal, Vec2 texturePos, RenderObject renderable, double distance) {
         this.ray = ray;
         this.hitPos = hitPos;
         this.normal = normal;
@@ -19,31 +20,7 @@ public class Intersection {
         this.distance = distance;
     }
 
-    public Intersection(Ray ray, Vec3 hitPos, Vec3 normal, Vec2 texturePos, Renderable renderable) {
-        this(ray, hitPos, normal, texturePos, renderable, ray.getOrigin().subtract(hitPos).length());
-    }
-
-    public Ray getRay() {
-        return ray;
-    }
-
-    public Vec3 getHitPos() {
-        return hitPos;
-    }
-
-    public Vec3 getNormal() {
-        return normal;
-    }
-
-    public Renderable getRenderable() {
-        return renderable;
-    }
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public Vec2 getTexturePos() {
-        return texturePos;
+    public Intersection(Ray ray, Vec3 hitPos, Vec3 normal, Vec2 texturePos, RenderObject renderable) {
+        this(ray, hitPos, normal, texturePos, renderable, ray.origin.subtract(hitPos).length());
     }
 }

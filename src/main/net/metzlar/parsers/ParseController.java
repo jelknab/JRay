@@ -1,6 +1,6 @@
 package net.metzlar.parsers;
 
-import net.metzlar.renderEngine.scene.Scene;
+import net.metzlar.renderEngine.scene.SceneSettings;
 import org.jsoup.nodes.Element;
 
 import java.util.HashMap;
@@ -8,10 +8,10 @@ import java.util.Map;
 
 public abstract class ParseController<Type, ParserType extends Parser<Type>> {
     protected Map<String, ParserType> parsers = new HashMap<>();
-    protected Scene scene;
+    protected SceneSettings sceneSettings;
 
-    public ParseController(Scene scene) {
-        this.scene = scene;
+    public ParseController(SceneSettings sceneSettings) {
+        this.sceneSettings = sceneSettings;
     }
 
     public Type parse(Element docElement) {

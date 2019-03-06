@@ -9,12 +9,12 @@ public class SocketServer extends Thread {
 
     private int port;
 
-    private ClientManager clientManager;
+    private Server server;
     private ServerSocket serverSocket;
 
-    public SocketServer(int port, ClientManager clientManager) {
+    public SocketServer(int port, Server server) {
         this.port = port;
-        this.clientManager = clientManager;
+        this.server = server;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class SocketServer extends Thread {
             throw new RuntimeException("Error accepting client connection", e);
         }
 
-        clientManager.registerClient(clientSocket);
+        server.registerClient(clientSocket);
     }
 
     public void terminate() {

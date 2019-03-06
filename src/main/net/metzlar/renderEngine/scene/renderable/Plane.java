@@ -1,44 +1,50 @@
 package net.metzlar.renderEngine.scene.renderable;
 
+import net.metzlar.renderEngine.scene.Object3D;
 import net.metzlar.renderEngine.scene.material.Material;
 import net.metzlar.renderEngine.types.*;
 
-public class Plane extends Renderable {
-    private final double textureScale;
+public class Plane extends RenderObject implements Intersectable {
+    public Vec3 normal;
 
-    public Plane(Vec3 center, Angle orientation, double textureScale) {
-        super(center, orientation, Material.DEFAULT);
-        this.textureScale = textureScale;
-
-        this.orientation = new Vec3(0, 1, 0)
+    public Plane(Vec3 position, Angle orientation) {
+        this(
+                position,
+                new Vec3(0, 1, 0)
                 .rotateAxisX(Math.toRadians(orientation.getPitch()))
                 .rotateAxisY(Math.toRadians(orientation.getYaw()))
-                .rotateAxisZ(Math.toRadians(orientation.getRoll()));
+                .rotateAxisZ(Math.toRadians(orientation.getRoll()))
+        );
+    }
+
+    public Plane(Vec3 position, Vec3 normal) {
+        super(position);
+        this.normal = normal;
     }
 
     @Override
-    public Intersection intersectRay(Ray r) {
-        double denominator = this.orientation.dot(r.getDirection());
+    public Intersection intersectRay(Ray ray) {
+        double denominator = this.normal.dot(ray.direction);
 
         if (denominator > 1e-6) {//greater than epsilon
-            double dist = this.getPosition().subtract(r.getOrigin()).dot(this.orientation) / denominator;
+            double dist = this.position.subtract(ray.origin).dot(this.normal) / denominator;
 
             if (dist >= 0) {
                 //get texture coordinate
-                Vec3 uAxis = new Vec3(orientation.getY(), orientation.getZ(), -orientation.getX());
-                Vec3 vAxis = uAxis.cross(orientation);
+                Vec3 uAxis = new Vec3(normal.getY(), normal.getZ(), -normal.getX());
+                Vec3 vAxis = uAxis.cross(normal);
 
-                Vec3 hitPos = r.getOrigin().add(r.getDirection().multiply(dist));
+                Vec3 hitPos = ray.origin.add(ray.direction.multiply(dist));
 
                 Vec2 uv = new Vec2(
-                        hitPos.dot(uAxis) * textureScale,
-                        hitPos.dot(vAxis) * textureScale
+                        hitPos.dot(uAxis),
+                        hitPos.dot(vAxis)
                 );
 
                 return new Intersection(
-                        r,
+                        ray,
                         hitPos,
-                        orientation.multiply(-1),
+                        normal.multiply(-1),
                         uv,
                         this
                 );

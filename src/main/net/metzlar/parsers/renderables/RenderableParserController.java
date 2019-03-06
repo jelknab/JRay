@@ -2,17 +2,17 @@ package net.metzlar.parsers.renderables;
 
 import net.metzlar.parsers.ParseController;
 import net.metzlar.parsers.Parser;
-import net.metzlar.renderEngine.scene.Scene;
-import net.metzlar.renderEngine.scene.renderable.Renderable;
+import net.metzlar.renderEngine.scene.SceneSettings;
+import net.metzlar.renderEngine.scene.renderable.RenderObject;
 import org.jsoup.nodes.Element;
 
 /**
  * Created by Jelle-laptop on 19-Feb-17.
  */
-public class RenderableParserController extends ParseController<Renderable, Parser<Renderable>> {
+public class RenderableParserController extends ParseController<RenderObject, Parser<RenderObject>> {
 
-    public RenderableParserController(Scene scene) {
-        super(scene);
+    public RenderableParserController(SceneSettings sceneSettings) {
+        super(sceneSettings);
 
         parsers.put("sphere", new ParserSphere());
         parsers.put("plane", new ParserPlane());
@@ -20,17 +20,17 @@ public class RenderableParserController extends ParseController<Renderable, Pars
     }
 
     @Override
-    public Renderable parse(Element docElement) {
-        Renderable renderable = super.parse(docElement);
+    public RenderObject parse(Element docElement) {
+        RenderObject renderObject = super.parse(docElement);
 
-        if (renderable == null) {
+        if (renderObject == null) {
             return null;
         }
 
         if (docElement.hasAttr("material")) {
-            renderable.setMaterial(scene.getMaterial(docElement.attr("material")));
+            renderObject.material = sceneSettings.materials.get(docElement.attr("material"));
         }
 
-        return renderable;
+        return renderObject;
     }
 }

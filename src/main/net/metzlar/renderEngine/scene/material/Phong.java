@@ -2,7 +2,7 @@ package net.metzlar.renderEngine.scene.material;
 
 import net.metzlar.renderEngine.Render;
 import net.metzlar.renderEngine.Sample;
-import net.metzlar.renderEngine.scene.Scene;
+import net.metzlar.renderEngine.scene.SceneSettings;
 import net.metzlar.renderEngine.scene.light.Light;
 import net.metzlar.renderEngine.scene.texture.Texture;
 import net.metzlar.renderEngine.types.Color;
@@ -23,7 +23,7 @@ public class Phong extends Material {
     }
 
     @Override
-    public void init(Scene scene) {
+    public void init(SceneSettings sceneSettings) {
 
     }
 
@@ -31,22 +31,22 @@ public class Phong extends Material {
     public Color render(Intersection intersection, Render render, Sample sample) {
         Color color = Color.BLACK;
 
-        Color surfaceColor = getTexture().getColorAtPosition(intersection.getTexturePos());
+        Color surfaceColor = getTexture().getColorAtPosition(intersection.texturePos);
 
-        for (Light light : render.getScene().getLights()) {
+        for (Light light : render.sceneSettings.lights) {
             Color intensity = light.getNormIntensity(render, intersection);
 
             if (intensity != Color.BLACK) {
-                Vec3 light2PointDir = light.getPosition().subtract(intersection.getHitPos()).getNormalized();
+                Vec3 light2PointDir = light.position.subtract(intersection.hitPos).getNormalized();
 
                 // Diffuse
-                double shading = light2PointDir.dot(intersection.getNormal());
+                double shading = light2PointDir.dot(intersection.normal);
                 Color diffuse = surfaceColor.multiply(shading).multiply(intensity);
 
                 // Specular highlight
                 // specular += vis * lightIntensity * std::pow(std::max(0.f, R.dotProduct(-dir)), isect.hitObject->n);
                 Vec3 r = reflect(intersection, light2PointDir);
-                Color specular = light.getColor().multiply(Math.pow(Math.max(0, r.dot(intersection.getRay().getDirection())), n));
+                Color specular = light.getColor().multiply(Math.pow(Math.max(0, r.dot(intersection.ray.direction)), n));
 
                 if (shading > 0)
                     color = color
@@ -60,8 +60,8 @@ public class Phong extends Material {
 
     private Vec3 reflect(Intersection intersection, Vec3 lightDirection) {
         return lightDirection.subtract(
-                intersection.getNormal().multiply(
-                        2 * lightDirection.dot(intersection.getNormal())
+                intersection.normal.multiply(
+                        2 * lightDirection.dot(intersection.normal)
                 )
         );
     }

@@ -14,11 +14,11 @@ public class ClientConnection extends Thread {
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private final RenderClient renderClient;
-    private final ClientManager clientManager;
+    private final Server server;
 
-    public ClientConnection(RenderClient renderClient, ClientManager clientManager) {
+    public ClientConnection(RenderClient renderClient, Server server) {
         this.renderClient = renderClient;
-        this.clientManager = clientManager;
+        this.server = server;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ClientConnection extends Thread {
 
             @Override
             public void send(ObjectOutputStream oos) throws IOException {
-                oos.writeObject(clientManager.getSettings());
+                oos.writeObject(server.settingsXML);
             }
         });
         handlerMap.put(MessageType.GET_TILE.getId(), new RequestHandler() {
@@ -45,7 +45,7 @@ public class ClientConnection extends Thread {
 
             @Override
             public void send(ObjectOutputStream oos) throws IOException {
-                if (!clientManager.tileAvailable()) {
+                if (!server.tileAvailable()) {
                     oos.writeInt(MessageType.SCENE_COMPLETE.getId());
                     oos.flush();
 
@@ -53,7 +53,7 @@ public class ClientConnection extends Thread {
                     return;
                 }
 
-                RenderTile tile = clientManager.assignNextTileToClient(renderClient.getId());
+                RenderTile tile = server.assignNextTileToClient(renderClient.getId());
 
                 oos.writeInt(MessageType.TILE_AVAILABLE.getId());
                 oos.writeObject(tile);
@@ -64,7 +64,7 @@ public class ClientConnection extends Thread {
             public Void receive(ObjectInputStream ois) throws IOException {
                 try {
                     RenderTile tile = (RenderTile) ois.readObject();
-                    clientManager.submitTile(renderClient.getId(), tile);
+                    server.submitTile(renderClient.getId(), tile);
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }

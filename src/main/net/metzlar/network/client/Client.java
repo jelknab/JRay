@@ -2,21 +2,22 @@ package net.metzlar.network.client;
 
 import net.metzlar.Settings;
 import net.metzlar.renderEngine.RenderThread;
-import net.metzlar.renderEngine.RenderTile;
-import net.metzlar.renderEngine.Statistics;
+import net.metzlar.renderEngine.scene.SceneSettings;
+import net.metzlar.settings.ImageSettings;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.util.Optional;
 
 /**
  * This is the class that will initiate and control the process of ray casting
  */
 public class Client {
-    private String host;
-    private int port;
-    private Settings settings;
+    public String host;
+    public int port;
+    public ImageSettings imageSettings;
+    public SceneSettings sceneSettings;
     private boolean finished = false;
-    private Statistics statistics;
 
     private ServerConnection serverConnection;
 
@@ -24,7 +25,6 @@ public class Client {
         String[] hostPortSplit = serverAddress.split(":");
         this.host = hostPortSplit[0];
         this.port = Integer.parseInt(hostPortSplit[1]);
-        this.statistics = new Statistics();
 
         this.serverConnection = new ServerConnection(this.host, this.port, this);
     }
@@ -33,15 +33,20 @@ public class Client {
         System.out.printf("Starting client. Server at: %s:%d\n", host, port);
 
         serverConnection.open();
-        serverConnection.requestSettings().ifPresent(settings -> {
-            if (load(settings)) {
+        serverConnection.RequestSettingsXMLFromServer().ifPresent(settingsXML -> {
+            if (loadSettingsDocument(settingsXML)) {
                 render();
             }
         });
     }
 
-    public boolean load(Settings settings) {
-        this.settings = settings;
+    public boolean loadSettingsDocument(String settingsXML) {
+
+        System.out.println("Parsing settings file...");
+
+        Settings settings = new Settings(Jsoup.parse(settingsXML));
+        this.imageSettings = settings.parseImageSettings();
+        this.sceneSettings = settings.parseSceneSettings();
 
         //todo: check if all needed files are available
 
@@ -71,24 +76,6 @@ public class Client {
         if (!this.finished) {
             this.finished = true;
             System.out.println("Received shutdown signal from server.");
-
-            System.out.println(statistics);
         }
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public Settings getSettings() {
-        return settings;
-    }
-
-    public Statistics getStatistics() {
-        return statistics;
     }
 }

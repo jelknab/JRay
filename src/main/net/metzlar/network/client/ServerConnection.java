@@ -4,6 +4,7 @@ import net.metzlar.Settings;
 import net.metzlar.network.MessageType;
 import net.metzlar.network.RequestHandler;
 import net.metzlar.renderEngine.RenderTile;
+import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -69,12 +70,12 @@ public class ServerConnection {
         }).handle(oos, ois);
     }
 
-    Optional<Settings> requestSettings() {
-        return new RequestHandlerWorker<>(new RequestHandler<Optional<Settings>>() {
+    Optional<String> RequestSettingsXMLFromServer() {
+        return new RequestHandlerWorker<>(new RequestHandler<Optional<String>>() {
             @Override
-            public Optional<Settings> receive(ObjectInputStream ois) throws IOException {
+            public Optional<String> receive(ObjectInputStream ois) throws IOException {
                 try {
-                    return Optional.of((Settings) ois.readObject());
+                    return Optional.of((String) ois.readObject());
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -90,7 +91,7 @@ public class ServerConnection {
         }).handle(oos, ois);
     }
 
-    Optional<RenderTile> requestTile() {
+    Optional<RenderTile> getOptionalTileFromServer() {
         return new RequestHandlerWorker<>(new RequestHandler<Optional<RenderTile>>() {
             @Override
             public Optional<RenderTile> receive(ObjectInputStream ois) throws IOException {

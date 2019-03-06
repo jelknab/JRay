@@ -5,18 +5,11 @@ import net.metzlar.renderEngine.types.Vec3;
 import java.io.Serializable;
 
 public class Object3D implements Serializable {
-    private Vec3 position;
+    public Vec3 position;
+    public Vec3 orientation;
 
-    public Object3D(Vec3 position) {
+    public Object3D(Vec3 position, Vec3 orientation) {
         this.position = position;
-    }
-
-
-    public Vec3 getPosition() {
-        return position;
-    }
-
-    public void setPosition(Vec3 position) {
-        this.position = position;
+        this.orientation = orientation;
     }
 }
