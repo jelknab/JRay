@@ -3,6 +3,7 @@ package net.metzlar.renderEngine.scene.material;
 import net.metzlar.renderEngine.Render;
 import net.metzlar.renderEngine.Sample;
 import net.metzlar.renderEngine.scene.SceneSettings;
+import net.metzlar.renderEngine.scene.texture.SolidColor;
 import net.metzlar.renderEngine.types.Color;
 import net.metzlar.renderEngine.types.Intersection;
 import net.metzlar.renderEngine.types.Ray;
@@ -13,6 +14,8 @@ import java.util.Random;
 // https://www.scratchapixel.com/code.php?id=34&origin=/lessons/3d-basic-rendering/global-illumination-path-tracing
 public class HemisphereDebug extends Material {
     private static final int SAMPLES = 16;
+
+    private Random random = new Random();
 
     public HemisphereDebug() {
         super(null);
@@ -45,7 +48,6 @@ public class HemisphereDebug extends Material {
         }
         Vec3 nb = n.cross(nt);
 
-        Random random = new Random();
         for (int i = 0; i < SAMPLES; i++) {
             double r1 = random.nextDouble();
             double r2 = random.nextDouble();
@@ -67,6 +69,6 @@ public class HemisphereDebug extends Material {
             );
         }
 
-        return Color.BLACK;
+        return new Lambert(new SolidColor(new Color(.5, .5, .5))).render(intersection, render, sample);
     }
 }

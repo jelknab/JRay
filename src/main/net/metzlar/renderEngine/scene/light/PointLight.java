@@ -49,7 +49,7 @@ public class PointLight extends Light {
     }
 
     @Override
-    public Color getRawIntensity(Render render, Intersection originalIntersection) {
+    public Color getIntensity(Render render, Intersection originalIntersection) {
         Vec3    point2Light = this.position.subtract(originalIntersection.hitPos);
         double  lightDistance = point2Light.length();
 

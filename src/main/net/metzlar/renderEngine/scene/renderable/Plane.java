@@ -1,5 +1,6 @@
 package net.metzlar.renderEngine.scene.renderable;
 
+import net.metzlar.renderEngine.scene.material.HemisphereDebug;
 import net.metzlar.renderEngine.types.*;
 
 public class Plane extends RenderObject implements Intersectable {

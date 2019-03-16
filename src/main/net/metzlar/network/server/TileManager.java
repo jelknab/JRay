@@ -19,7 +19,7 @@ public class TileManager {
 
         remainingTiles = new PriorityBlockingQueue<>(
                 tileColumns * tileRows,
-                Comparator.comparingDouble(o -> tileDistanceToCenter(o, width, height))
+                Comparator.comparingDouble(o -> tileDistanceToCenter(o, width/2, height/2))
         );
         activeTiles = new ArrayList<>(tileColumns * tileRows);
 
@@ -38,7 +38,7 @@ public class TileManager {
     }
 
     public double tileDistanceToCenter(RenderTile tile, int width, int height) {
-        return Math.sqrt(Math.pow(tile.getStartX()-width/2.0, 2) + Math.pow(tile.getStartY()-height/2.0, 2));
+        return Math.sqrt(Math.pow((tile.getStartX()+tile.getWidth()/2.0)-width, 2) + Math.pow((tile.getStartY()+tile.getHeight()/2.0)-height, 2));
     }
 
     public void removeTile(RenderTile tile) {

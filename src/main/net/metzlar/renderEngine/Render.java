@@ -6,7 +6,7 @@ import net.metzlar.renderEngine.types.Color;
 import java.util.Stack;
 
 public class Render {
-    private static final int MAX_DEPTH = 255;
+    private static final int MAX_DEPTH = 16;
 
     public SceneSettings sceneSettings;
     private Sample cameraSample;

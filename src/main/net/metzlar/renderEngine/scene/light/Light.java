@@ -21,7 +21,7 @@ public abstract class Light extends Object3D implements Serializable {
 
     public abstract Color getNormIntensity(Render render, Intersection intersection);
 
-    public abstract Color getRawIntensity(Render render, Intersection intersection);
+    public abstract Photon getIntensity(Render render, Intersection intersection);
 
     public Color getColor() {
         return color;

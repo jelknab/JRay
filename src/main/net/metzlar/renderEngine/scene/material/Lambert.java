@@ -44,13 +44,4 @@ public class Lambert extends Material {
         return color;
     }
 
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public void setName(String name) {
-
-    }
 }

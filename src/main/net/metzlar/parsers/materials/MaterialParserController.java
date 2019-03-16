@@ -16,6 +16,7 @@ public class MaterialParserController extends ParseController<Material, Parser<M
         parsers.put("lambert", new ParserLambert());
         parsers.put("phong", new ParserPhong());
         parsers.put("specular", new ParserSpecular());
+        parsers.put("debug", new ParserDebug());
     }
 
     @Override

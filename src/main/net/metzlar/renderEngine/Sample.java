@@ -9,7 +9,7 @@ import net.metzlar.renderEngine.types.Ray;
  * Every time a bunch of rays need to be cast it should add a sample with said ray to the render queue
  */
 public class Sample {
-    private Ray ray;
+    protected Ray ray;
     private Sample parent;
     private double contribution;
     public double contributionToRoot;
@@ -33,6 +33,8 @@ public class Sample {
         Intersection intersection = render.sceneSettings.intersectScene(this.ray, render);
 
         if (intersection != null) {
+            intersection.renderable.material.illuminate(intersection, render, this);
+
             this.color = intersection.renderable.material
                     .render(intersection, render, this);
         }
