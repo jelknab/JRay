@@ -58,7 +58,7 @@ I've decided to host it on Github for my portfolio.
 
 <h2>Trying it yourself</h2>
 <p>
-Right now it's simple. Simply clone the project, edit the sceneSettings and settingsXML in scenes/testSettings.xml if 
+Right now it's simple. Simply clone the project, edit the scene and settingsXML in scenes/testSettings.xml if 
 you like.<br><strong>Make sure you have the .obj models stored in <code>~/JRay/models</code></strong><br><br>
 Build with maven; Run with args:<br>
 <code>-h -s scenes/testSettings.xml -p 9090 -a localhost:9090</code>

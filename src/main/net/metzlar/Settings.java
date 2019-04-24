@@ -1,7 +1,7 @@
 package net.metzlar;
 
 import net.metzlar.parsers.SceneParser;
-import net.metzlar.renderEngine.scene.SceneSettings;
+import net.metzlar.renderEngine.scene.Scene;
 import net.metzlar.settings.ImageSettings;
 import org.jsoup.nodes.Document;
 
@@ -25,7 +25,7 @@ public class Settings implements Serializable {
         );
     }
 
-    public SceneSettings parseSceneSettings() {
-        return new SceneParser().parse(settingsDocument.select("settingsXML > sceneSettings").first());
+    public Scene parseSceneSettings() {
+        return new SceneParser().parse(settingsDocument.select("settingsXML > scene").first());
     }
 }

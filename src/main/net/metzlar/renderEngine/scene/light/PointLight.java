@@ -7,11 +7,8 @@ import net.metzlar.renderEngine.types.Ray;
 import net.metzlar.renderEngine.types.Vec3;
 
 public class PointLight extends Light {
-    private double intensity;
-
     public PointLight(Vec3 position, Color color, double intensity) {
-        super(position, color);
-        this.intensity = intensity;
+        super(position, color, intensity);
     }
 
     @Override
@@ -27,7 +24,7 @@ public class PointLight extends Light {
 
         // Ray from light towards point
         Ray r = new Ray(originalIntersection.hitPos, point2LightNormalized);
-        Intersection point2LightIntersection = render.sceneSettings.intersectScene(r, render);
+        Intersection point2LightIntersection = render.scene.intersect(r, render);
 
         // Check if we hit anything (we should hit our intersection object)
         if (point2LightIntersection != null) {
@@ -49,35 +46,31 @@ public class PointLight extends Light {
     }
 
     @Override
-    public Color getIntensity(Render render, Intersection originalIntersection) {
+    public Photon getIntensity(Render render, Intersection originalIntersection) {
         Vec3    point2Light = this.position.subtract(originalIntersection.hitPos);
         double  lightDistance = point2Light.length();
 
         // Is the light too far to affect the point?
-        if (lightDistance >= intensity) return Color.BLACK;
+        if (lightDistance >= intensity) return null;
 
         Vec3 point2LightNormalized = point2Light.getNormalized();
 
         // Ray from light towards point
         Ray r = new Ray(originalIntersection.hitPos, point2LightNormalized);
-        Intersection point2LightIntersection = render.sceneSettings.intersectScene(r, render);
+        Intersection point2LightIntersection = render.scene.intersect(r, render);
 
         // Check if we hit anything (we should hit our intersection object)
         if (point2LightIntersection != null) {
 
             // If the light ray distance is greater than the distance from light to hitpoint, it is not blocked
             if (lightDistance - point2LightIntersection.distance < 1e-6) {
-                return this.color.multiply(intensity - lightDistance);
+                return new Photon(this, lightDistance);
             }
 
-            // TODO: remove this, as this should not happen.
-//            if (point2LightIntersection.getRenderable() == originalIntersection.getRenderable()){
-//                return Color.GREEN;
-//            }
         } else {// No intersection (void behind the light), light not blocked
-            return this.color.multiply(intensity - lightDistance);
+            return new Photon(this, lightDistance);
         }
 
-        return Color.BLACK;
+        return null;
     }
 }

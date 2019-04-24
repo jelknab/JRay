@@ -1,52 +1,21 @@
 package net.metzlar.renderEngine;
 
-import net.metzlar.renderEngine.types.Color;
-import net.metzlar.renderEngine.types.Intersection;
+import javafx.scene.Parent;
 import net.metzlar.renderEngine.types.Ray;
 
-/**
- * Class that helps with setting up the render queue by avoiding stack overflows from recursive function calling
- * Every time a bunch of rays need to be cast it should add a sample with said ray to the render queue
- */
-public class Sample {
-    protected Ray ray;
-    private Sample parent;
-    private double contribution;
-    public double contributionToRoot;
-    public Color color = Color.BLACK;
-    public int depth = 0;
+public abstract class Sample {
+    Ray ray;
+    Sample parent;
+    int depth;
 
-    public Sample(Ray ray, Sample parent, double contribution) {
+    public Sample(Ray ray, Sample parent, int depth) {
         this.ray = ray;
         this.parent = parent;
-        this.contribution = contribution;
-
-        if (parent != null) {
-            this.contributionToRoot = parent.contributionToRoot * contribution;
-            this.depth = parent.depth + 1;
-        } else {
-            this.contributionToRoot = 1d;
-        }
+        this.depth = depth;
     }
 
-    public void render(Render render) {
-        Intersection intersection = render.sceneSettings.intersectScene(this.ray, render);
+    public abstract void render(Render render);
 
-        if (intersection != null) {
-            intersection.renderable.material.illuminate(intersection, render, this);
+    public abstract void mergeToParent();
 
-            this.color = intersection.renderable.material
-                    .render(intersection, render, this);
-        }
-    }
-
-    public void addColorToParent() {
-        if (this.parent == null) return;
-
-        this.parent.addColor(this.color.multiply(this.contribution));
-    }
-
-    private void addColor(Color color) {
-        this.color = this.color.add(color);
-    }
 }

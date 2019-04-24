@@ -1,8 +1,8 @@
 package net.metzlar.renderEngine.scene.material;
 
 import net.metzlar.renderEngine.Render;
-import net.metzlar.renderEngine.Sample;
-import net.metzlar.renderEngine.scene.SceneSettings;
+import net.metzlar.renderEngine.SampleDirect;
+import net.metzlar.renderEngine.scene.Scene;
 import net.metzlar.renderEngine.types.Color;
 import net.metzlar.renderEngine.types.Intersection;
 import net.metzlar.renderEngine.types.Ray;
@@ -24,8 +24,8 @@ public class Specular extends Material {
 
 
     @Override
-    public void init(SceneSettings sceneSettings) {
-        baseMaterial = sceneSettings.materials.get(inputMaterialName);
+    public void init(Scene scene) {
+        baseMaterial = scene.materials.get(inputMaterialName);
 
         if (baseMaterial == null) {
             baseMaterial = DEFAULT;
@@ -33,14 +33,26 @@ public class Specular extends Material {
     }
 
     @Override
-    public Color render(Intersection intersection, Render render, Sample sample) {
+    public Color render(Intersection intersection, Render render, SampleDirect sample) {
         Ray reflectedRay = new Ray(intersection.hitPos, reflect(intersection));
 
-        Sample reflectionSample = new Sample(reflectedRay, sample, this.kr);
+        SampleDirect reflectionSample = new SampleDirect(reflectedRay, sample, this.kr);
 
         render.addSample(reflectionSample);
 
         return baseMaterial.render(intersection, render, sample).multiply(this.kd);
+    }
+
+    @Override
+    public Color getSurfaceColor(Intersection intersection) {
+        return baseMaterial.getSurfaceColor(intersection).multiply(this.kd);
+    }
+
+    @Override
+    public Color getIndirectDiffuse(Intersection intersection) {
+        return baseMaterial.getIndirectDiffuse(intersection)
+                .multiply(this.kd)
+                .add(Color.WHITE.multiply(this.kr));
     }
 
     private Vec3 reflect(Intersection intersection) {

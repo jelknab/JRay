@@ -1,8 +1,8 @@
 package net.metzlar.renderEngine.scene.material;
 
 import net.metzlar.renderEngine.Render;
-import net.metzlar.renderEngine.Sample;
-import net.metzlar.renderEngine.scene.SceneSettings;
+import net.metzlar.renderEngine.SampleDirect;
+import net.metzlar.renderEngine.scene.Scene;
 import net.metzlar.renderEngine.scene.texture.SolidColor;
 import net.metzlar.renderEngine.types.Color;
 import net.metzlar.renderEngine.types.Intersection;
@@ -31,12 +31,12 @@ public class HemisphereDebug extends Material {
 
 
     @Override
-    public void init(SceneSettings sceneSettings) {
+    public void init(Scene scene) {
 
     }
 
     @Override
-    public Color render(Intersection intersection, Render render, Sample sample) {
+    public Color render(Intersection intersection, Render render, SampleDirect sample) {
         Vec3 n = intersection.normal;
         Vec3 nt; // Vector perpendicular to normal
         if (n.getX() > n.getY()) {
@@ -61,7 +61,7 @@ public class HemisphereDebug extends Material {
 
 
             render.addSample(
-                    new Sample(
+                    new SampleDirect(
                             new Ray(intersection.hitPos, sampleWorld),
                             sample,
                             1d / SAMPLES

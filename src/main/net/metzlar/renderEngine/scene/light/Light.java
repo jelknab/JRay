@@ -13,10 +13,12 @@ import java.io.Serializable;
  */
 public abstract class Light extends Object3D implements Serializable {
     Color color;
+    public double intensity;
 
-    public Light(Vec3 position, Color color) {
+    public Light(Vec3 position, Color color, double intensity) {
         super(position, null);
         this.color = color;
+        this.intensity = intensity;
     }
 
     public abstract Color getNormIntensity(Render render, Intersection intersection);

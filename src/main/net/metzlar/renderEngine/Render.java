@@ -1,6 +1,7 @@
 package net.metzlar.renderEngine;
 
-import net.metzlar.renderEngine.scene.SceneSettings;
+import net.metzlar.renderEngine.scene.Scene;
+import net.metzlar.renderEngine.scene.light.Photon;
 import net.metzlar.renderEngine.types.Color;
 
 import java.util.Stack;
@@ -8,20 +9,20 @@ import java.util.Stack;
 public class Render {
     private static final int MAX_DEPTH = 16;
 
-    public SceneSettings sceneSettings;
-    private Sample cameraSample;
+    public Scene scene;
+    private Sample rootSample;
     private Stack<Sample> sampleStack = new Stack<>();
     private Stack<Sample> finishedSampleStack = new Stack<>();
 
-    public Render(SceneSettings sceneSettings, Sample cameraSample) {
-        this.sceneSettings = sceneSettings;
-        this.cameraSample = cameraSample;
+    public Render(Scene scene, Sample rootSample) {
+        this.scene = scene;
+        this.rootSample = rootSample;
 
-        this.sampleStack.push(cameraSample);
+        this.sampleStack.push(rootSample);
     }
 
     public void addSample(Sample sample) {
-        if (sample.depth > MAX_DEPTH || sample.contributionToRoot < 0.01) return;
+        if (sample.depth > MAX_DEPTH) return;
 
         this.sampleStack.push(sample);
     }
@@ -32,10 +33,11 @@ public class Render {
         finishedSampleStack.push(next);
     }
 
-    public Color render() {
+    public Sample render() {
         while (!sampleStack.empty()) renderSample();
-        while (!finishedSampleStack.empty()) finishedSampleStack.pop().addColorToParent();
-        return cameraSample.color;
+        while (!finishedSampleStack.empty()) finishedSampleStack.pop().mergeToParent();
+
+        return rootSample;
     }
 
     @Override

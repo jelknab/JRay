@@ -57,13 +57,19 @@ public class Image {
                 Color color = this.image[x][y];
 
                 if (color != null) {
-                    java.awt.Color imageColor = new java.awt.Color(
-                            Math.min(color.getR() / exposure, 1),
-                            Math.min(color.getG() / exposure, 1),
-                            Math.min(color.getB() / exposure, 1)
-                    );
+                    try {
+                        java.awt.Color imageColor = new java.awt.Color(
+                                Math.min(color.getR() / exposure, 1),
+                                Math.min(color.getG() / exposure, 1),
+                                Math.min(color.getB() / exposure, 1)
+                        );
 
-                    returnImage.setRGB(x, y, imageColor.getRGB());
+                        returnImage.setRGB(x, y, imageColor.getRGB());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(color.getR() / exposure);
+                        System.out.println(color.getG() / exposure);
+                        System.out.println(color.getB() / exposure);
+                    }
                 }
             }
         }

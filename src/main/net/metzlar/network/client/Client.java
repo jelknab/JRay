@@ -2,7 +2,7 @@ package net.metzlar.network.client;
 
 import net.metzlar.Settings;
 import net.metzlar.renderEngine.RenderThread;
-import net.metzlar.renderEngine.scene.SceneSettings;
+import net.metzlar.renderEngine.scene.Scene;
 import net.metzlar.settings.ImageSettings;
 import org.jsoup.Jsoup;
 
@@ -15,7 +15,7 @@ public class Client {
     public String host;
     public int port;
     public ImageSettings imageSettings;
-    public SceneSettings sceneSettings;
+    public Scene scene;
     private boolean finished = false;
 
     private ServerConnection serverConnection;
@@ -45,7 +45,7 @@ public class Client {
 
         Settings settings = new Settings(Jsoup.parse(settingsXML));
         this.imageSettings = settings.parseImageSettings();
-        this.sceneSettings = settings.parseSceneSettings();
+        this.scene = settings.parseSceneSettings();
 
         return true;
     }

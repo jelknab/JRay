@@ -11,13 +11,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SceneSettings implements Serializable {
+public class Scene implements Serializable {
     public ArrayList<Intersectable> renderables;
     public HashMap<String, Material> materials;
     public Camera camera;
     public ArrayList<Light> lights;
 
-    public SceneSettings() {
+    public Scene() {
         this.renderables = new ArrayList<>();
         this.lights = new ArrayList<>();
         this.materials = new HashMap<>();
@@ -28,7 +28,7 @@ public class SceneSettings implements Serializable {
      * @param render render for updating intersection totals
      * @return null for no intersection or the closest intersected object.
      */
-    public Intersection intersectScene(Ray ray, Render render) {
+    public Intersection intersect(Ray ray, Render render) {
         return Intersectable.closestIntersection(ray, this.renderables);
     }
 

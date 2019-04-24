@@ -14,7 +14,7 @@ public class GUI extends JFrame {
             this.repaint();
         });
 
-        this.setSize(1812, 1024);
+        this.setSize(Math.min(image.settings.imageWidth, 1024), Math.min(image.settings.imageHeight, 1024));
 
         this.setTitle("Render preview");
 

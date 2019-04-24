@@ -24,7 +24,7 @@ public class JRay {
      *             -h       start as server
      *             -o       start server only (no rendering on host)
      *             -p       port on which the server is hosted (default 9090)
-     *             -s       full path to sceneSettings file
+     *             -s       full path to scene file
      *             --save   Save image
      */
     public static void main(String[] args) {
@@ -111,10 +111,10 @@ public class JRay {
         String settingsXML;
 
         if (settingsFile == null) {
-            System.out.println("No sceneSettings file specified.");
+            System.out.println("No scene file specified.");
             return false;
         } else if (!settingsFile.exists()) {
-            System.out.printf("SceneSettings file at %s does not exist.", settingsFile.getAbsolutePath());
+            System.out.printf("Scene file at %s does not exist.", settingsFile.getAbsolutePath());
             return false;
         } else {
             try {
@@ -132,7 +132,7 @@ public class JRay {
 
         settings = new Settings(Jsoup.parse(settingsXML));
 
-        System.out.printf("Using sceneSettings: %s\n", settingsFile.getName());
+        System.out.printf("Using scene: %s\n", settingsFile.getName());
 
         Image image = new Image(settings.parseImageSettings());
         new GUI(image);

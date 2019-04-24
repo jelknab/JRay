@@ -1,12 +1,12 @@
 package net.metzlar.renderEngine;
 
 import net.metzlar.network.client.RenderClient;
+import net.metzlar.renderEngine.scene.Scene;
 import net.metzlar.renderEngine.types.Color;
 import net.metzlar.renderEngine.types.Ray;
 import net.metzlar.renderEngine.types.Vec2;
 import net.metzlar.renderEngine.types.Vec3;
 import net.metzlar.renderEngine.scene.Camera;
-import net.metzlar.renderEngine.scene.SceneSettings;
 import net.metzlar.settings.ImageSettings;
 
 import java.util.Random;
@@ -45,14 +45,14 @@ public class RenderThread extends Thread {
     private void render() {
         RenderTile tile = this.renderclient.activeTile;
         ImageSettings imageSettings = this.renderclient.client.imageSettings;
-        SceneSettings sceneSettings = this.renderclient.client.sceneSettings;
-        Camera camera = sceneSettings.camera;
+        Scene scene = this.renderclient.client.scene;
+        Camera camera = scene.camera;
 
         double fov = camera.getFov();
         double fovMulRatio = fov * imageSettings.aspectRatio;
 
         int position; // Represents position of pixel RELATIVE to the tile
-        while ((position = this.renderclient.activeTile.takePosition()) !=-1) {
+        while ((position = this.renderclient.activeTile.takePosition()) != -1) {
             Color color = new Color();
 
             //x and y represent the GLOBAL 2d position of the pixel
@@ -72,16 +72,15 @@ public class RenderThread extends Thread {
 
                     //Create a ray from our camera
                     Ray cameraRay = new Ray(camera.getPosition(), direction);
-                    Sample cameraSample = new Sample(cameraRay, null, 1);
+                    SampleDirect cameraSample = new SampleDirect(cameraRay, null, 1);
 
                     color = color.add(
-                            new Render(sceneSettings, cameraSample)
-                                    .render()
-                                    .multiply(1d / (imageSettings.subSamples*imageSettings.subSamples))
+                            ((SampleDirect) new Render(scene, cameraSample)
+                                    .render()).color
+                                    .multiply(1d / (imageSettings.subSamples * imageSettings.subSamples))
                     );
                 }
             }
-
 
 
             tile.submit(position, color);
@@ -89,8 +88,8 @@ public class RenderThread extends Thread {
     }
 
     private Vec2 jitterSubsample(int x, int y, int subSamples) {
-        float newX = ((1f / subSamples) * x) + (random.nextFloat()/subSamples);
-        float newY = ((1f / subSamples) * y) + (random.nextFloat()/subSamples);
+        float newX = ((1f / subSamples) * x) + (random.nextFloat() / subSamples);
+        float newY = ((1f / subSamples) * y) + (random.nextFloat() / subSamples);
 
         return new Vec2(newX, newY);
     }
