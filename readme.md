@@ -13,7 +13,7 @@ I've decided to host it on Github for my portfolio.
 </p>
 
 ![Interesting renders](https://i.imgur.com/SdUB1Ro.jpg)
-![Interesting renders](https://i.imgur.com/HZTOO48.jpg)
+![Interesting renders](https://i.imgur.com/93mBeZO.jpg)
 ![Interesting renders](https://i.imgur.com/mCnuI1X.jpg)
 
 <h2>Features</h2>
@@ -42,6 +42,7 @@ I've decided to host it on Github for my portfolio.
     <li>Misc
         <ul>
             <li>KD-Tree for mesh's</li>
+            <li>Global illumination</li>
         </ul>
     </li>
 </ul>
@@ -52,7 +53,6 @@ I've decided to host it on Github for my portfolio.
     <li>Add more materials and textures</li>
     <li>Add support for sequence rendering</li>
     <li>Add more light types</li>
-    <li>Add global illumination</li>
     <li>optimisation tactics</li>
 </ol>
 
